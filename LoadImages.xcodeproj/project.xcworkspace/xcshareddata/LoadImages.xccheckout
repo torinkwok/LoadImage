@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>29433248-46EA-4FC3-BFDF-21297394B2FD</string>
+	<key>IDESourceControlProjectName</key>
+	<string>LoadImages</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>3AEB7E0D-3737-4DC1-9E7B-FBE3C58CB271</key>
+		<string>https://bitbucket.org/TongGuo/loadimages.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>LoadImages.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>3AEB7E0D-3737-4DC1-9E7B-FBE3C58CB271</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://bitbucket.org/TongGuo/loadimages.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>3AEB7E0D-3737-4DC1-9E7B-FBE3C58CB271</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3AEB7E0D-3737-4DC1-9E7B-FBE3C58CB271</string>
+			<key>IDESourceControlWCCName</key>
+			<string>LoadImages</string>
+		</dict>
+	</array>
+</dict>
+</plist>

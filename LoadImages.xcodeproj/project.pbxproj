@@ -18,8 +18,9 @@
 		833CEB4319714688005FD0B6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833CEB2219714688005FD0B6 /* Cocoa.framework */; };
 		833CEB4B19714688005FD0B6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 833CEB4919714688005FD0B6 /* InfoPlist.strings */; };
 		833CEB4D19714688005FD0B6 /* LoadImagesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CEB4C19714688005FD0B6 /* LoadImagesTests.m */; };
-		833CEB58197147B9005FD0B6 /* LIMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 833CEB57197147B9005FD0B6 /* LIMainWindow.xib */; };
 		833CEB5B197147C9005FD0B6 /* LIMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CEB5A197147C9005FD0B6 /* LIMainWindowController.m */; };
+		834BFDF819715205005918E0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 834BFDF719715205005918E0 /* README.md */; };
+		834BFDF919715407005918E0 /* LIMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 834BFDFB19715407005918E0 /* LIMainWindow.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,9 +53,10 @@
 		833CEB4819714688005FD0B6 /* LoadImagesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LoadImagesTests-Info.plist"; sourceTree = "<group>"; };
 		833CEB4A19714688005FD0B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		833CEB4C19714688005FD0B6 /* LoadImagesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadImagesTests.m; sourceTree = "<group>"; };
-		833CEB57197147B9005FD0B6 /* LIMainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LIMainWindow.xib; sourceTree = "<group>"; };
 		833CEB59197147C9005FD0B6 /* LIMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LIMainWindowController.h; sourceTree = "<group>"; };
 		833CEB5A197147C9005FD0B6 /* LIMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LIMainWindowController.m; sourceTree = "<group>"; };
+		834BFDF719715205005918E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
+		834BFDFA19715407005918E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/LIMainWindow.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				833CEB4619714688005FD0B6 /* LoadImagesTests */,
 				833CEB2119714688005FD0B6 /* Frameworks */,
 				833CEB2019714688005FD0B6 /* Products */,
+				834BFDF719715205005918E0 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -165,7 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				833CEB3719714688005FD0B6 /* LIMainMenu.xib */,
-				833CEB57197147B9005FD0B6 /* LIMainWindow.xib */,
+				834BFDFB19715407005918E0 /* LIMainWindow.xib */,
 			);
 			name = "User Interface";
 			path = LoadImages;
@@ -248,11 +251,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				834BFDF819715205005918E0 /* README.md in Resources */,
 				833CEB2D19714688005FD0B6 /* InfoPlist.strings in Resources */,
 				833CEB3B19714688005FD0B6 /* Images.xcassets in Resources */,
 				833CEB3319714688005FD0B6 /* Credits.rtf in Resources */,
 				833CEB3919714688005FD0B6 /* LIMainMenu.xib in Resources */,
-				833CEB58197147B9005FD0B6 /* LIMainWindow.xib in Resources */,
+				834BFDF919715407005918E0 /* LIMainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +330,14 @@
 				833CEB4A19714688005FD0B6 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		834BFDFB19715407005918E0 /* LIMainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				834BFDFA19715407005918E0 /* en */,
+			);
+			name = LIMainWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -488,6 +500,7 @@
 				833CEB5219714688005FD0B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		833CEB5319714688005FD0B6 /* Build configuration list for PBXNativeTarget "LoadImagesTests" */ = {
 			isa = XCConfigurationList;
@@ -496,6 +509,7 @@
 				833CEB5519714688005FD0B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
