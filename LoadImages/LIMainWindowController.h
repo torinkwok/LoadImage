@@ -34,7 +34,7 @@
 #import <Cocoa/Cocoa.h>
 
 // LIMainWindowController class
-@interface LIMainWindowController : NSWindowController
+@interface LIMainWindowController : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
 
 @property ( assign ) IBOutlet NSTableView* _tableView;  // The table holding the image paths
 

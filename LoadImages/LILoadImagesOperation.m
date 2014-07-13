@@ -113,7 +113,7 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
                 NSDictionary* userInfo = @{ LILoadImageOperationFileInfoNameKey : iamgeName
                                           , LILoadImageOperationFileInfoPathKey : imagePath
                                           , LILoadImageOperationFileInfoModifiedDateKey : modifiedDate
-                                          , LILoadImageOperationFileInfoSizeKey : imageSize
+                                          , LILoadImageOperationFileInfoSizeKey : [ NSNumber numberWithFloat: imageSize.floatValue / 1024 ]
                                           };
 
                 // Post a notification if the image has been loaded successfully
