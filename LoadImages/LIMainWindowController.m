@@ -33,6 +33,7 @@
 
 #import "LIMainWindowController.h"
 #import "LIGetPathsOperation.h"
+#import "LILoadImagesOperation.h"
 
 // LIMainWindowController + LIMainUserInterface
 @interface LIMainWindowController ( LIMainUserInterface )

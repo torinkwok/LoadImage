@@ -44,14 +44,13 @@ NSString* const LILoadImageOperationFileInfoModifiedDateKey = @"modifiedDate";
 NSString* const LILoadImageOperationFileInfoSizeKey = @"size";
 
 // Notification name
-NSString extern* const LILoadImageOperationLoadImageWillFinish = @"load image will finish";
-NSString extern* const LILoadImageOperationLoadImageDidFinish = @"load image did finish";
+NSString* const LILoadImageOperationLoadImageWillFinish = @"load image will finish";
+NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish";
 
 // LILoadImagesOperation class
 @implementation LILoadImagesOperation
 
 @synthesize _rootURL;
-@synthesize _userData;
 
 @synthesize _catchedExInMainTask;
 
@@ -64,10 +63,7 @@ NSString extern* const LILoadImageOperationLoadImageDidFinish = @"load image did
 - ( id ) initWithURL: ( NSURL* )_URL
     {
     if ( self = [ super init ] )
-        {
         self._rootURL = _URL;
-        self._userData = [ NSMutableDictionary dictionary ];
-        }
 
     return self;
     }
@@ -84,8 +80,6 @@ NSString extern* const LILoadImageOperationLoadImageDidFinish = @"load image did
                                             error: &error ];
     if ( res && UTLString )
         isImageFile = UTTypeConformsTo( ( __bridge CFStringRef )UTLString, kUTTypeImage );
-    else
-        self._userData[ LILoadImageOperationUserDataError ] = error;
 
     return isImageFile;
     }
@@ -115,17 +109,18 @@ NSString extern* const LILoadImageOperationLoadImageDidFinish = @"load image did
                 NSNumber* imageSize = @0;
                 [ imageURL getResourceValue: &imageSize forKey: NSURLFileSizeKey error: nil ];
 
-                // The entry in self._userData will be added to the data source for table view
-                self._userData[ LILoadImageOperationFileInfoNameKey ] = iamgeName;
-                self._userData[ LILoadImageOperationFileInfoPathKey ] = imagePath;
-                self._userData[ LILoadImageOperationFileInfoModifiedDateKey ] = modifiedDate;
-                self._userData[ LILoadImageOperationFileInfoSizeKey ] = imageSize;
+                // The entry in userInfo will be added to the data source for table view
+                NSDictionary* userInfo = @{ LILoadImageOperationFileInfoNameKey : iamgeName
+                                          , LILoadImageOperationFileInfoPathKey : imagePath
+                                          , LILoadImageOperationFileInfoModifiedDateKey : modifiedDate
+                                          , LILoadImageOperationFileInfoSizeKey : imageSize
+                                          };
 
                 // Post a notification if the image has been loaded successfully
                 if ( ![ self isCancelled ] )
                     [ [ NSNotificationCenter defaultCenter ] postNotificationName: LILoadImageOperationLoadImageDidFinish
                                                                            object: self
-                                                                         userInfo: self._userData ];
+                                                                         userInfo: userInfo ];
                 }
             }
         } @catch ( NSException* _Ex )
