@@ -33,26 +33,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-// LIMainWindowController class
-@interface LIMainWindowController : NSWindowController
+// LILoadImagesOperation class
+@interface LILoadImagesOperation : NSOperation
 
-@property ( assign ) IBOutlet NSTableView* _tableView;  // The table holding the image paths
 
-@property ( assign ) IBOutlet NSButton* _startButton;
-@property ( assign ) IBOutlet NSButton* _stopButton;
 
-@property ( assign ) IBOutlet NSProgressIndicator* _progressIndicator;
-
-@property ( retain ) NSOperationQueue* _operationQueue;
-
-+ ( id ) mainWindowController;
-
-#pragma mark -
-#pragma mark IBActions
-- ( IBAction ) startAction: ( id )_Sender;
-- ( IBAction ) stopAction: ( id )_Sender;
-
-@end // LIMainWindowController
+@end // LILoadImagesOperation
 
 /////////////////////////////////////////////////////////////////////////////
 

@@ -33,26 +33,22 @@
 
 #import <Cocoa/Cocoa.h>
 
-// LIMainWindowController class
-@interface LIMainWindowController : NSWindowController
+// LIGetPathsOperation class
+@interface LIGetPathsOperation : NSOperation
 
-@property ( assign ) IBOutlet NSTableView* _tableView;  // The table holding the image paths
+@property ( retain, readonly ) NSURL* _rootURL;
+@property ( retain, readonly ) NSOperationQueue* _operationQueue;
 
-@property ( assign ) IBOutlet NSButton* _startButton;
-@property ( assign ) IBOutlet NSButton* _stopButton;
+@property ( retain, readonly ) NSMutableArray* _catchedExInMainTask;
 
-@property ( assign ) IBOutlet NSProgressIndicator* _progressIndicator;
+#pragma mark Initializer(s)
++ ( id ) opetationWith: ( NSURL* )_URL;
+- ( id ) initWithURL: ( NSURL* )_URL;
 
-@property ( retain ) NSOperationQueue* _operationQueue;
+#pragma mark Overrides for main task
+- ( void ) main;
 
-+ ( id ) mainWindowController;
-
-#pragma mark -
-#pragma mark IBActions
-- ( IBAction ) startAction: ( id )_Sender;
-- ( IBAction ) stopAction: ( id )_Sender;
-
-@end // LIMainWindowController
+@end // LIGetPathsOperation
 
 /////////////////////////////////////////////////////////////////////////////
 

@@ -31,28 +31,73 @@
  **                                                                         **
  ****************************************************************************/
 
-#import <Cocoa/Cocoa.h>
+#import "LIGetPathsOperation.h"
 
-// LIMainWindowController class
-@interface LIMainWindowController : NSWindowController
+// LIGetPathsOperation class
+@implementation LIGetPathsOperation
 
-@property ( assign ) IBOutlet NSTableView* _tableView;  // The table holding the image paths
+@synthesize _rootURL;
+@synthesize _operationQueue;
 
-@property ( assign ) IBOutlet NSButton* _startButton;
-@property ( assign ) IBOutlet NSButton* _stopButton;
+@synthesize _catchedExInMainTask;
 
-@property ( assign ) IBOutlet NSProgressIndicator* _progressIndicator;
+#pragma mark Initializer(s)
++ ( id ) opetationWith: ( NSURL* )_URL
+    {
+    return [ [ [ [ self class ] alloc ] initWithURL: _URL ] autorelease ];
+    }
 
-@property ( retain ) NSOperationQueue* _operationQueue;
+- ( id ) initWithURL: ( NSURL* )_URL
+    {
+    if ( self = [ super init ] )
+        self->_rootURL = _URL;
 
-+ ( id ) mainWindowController;
+    return self;
+    }
 
-#pragma mark -
-#pragma mark IBActions
-- ( IBAction ) startAction: ( id )_Sender;
-- ( IBAction ) stopAction: ( id )_Sender;
+#pragma mark Overrides for main task
 
-@end // LIMainWindowController
+/* Because of the extra constraint in open panel, ( [ openPanel setCanChooseFiles: NO ] )
+ * self._url would never be a file name, it's always a dir name.
+ */
+- ( void ) main
+    {
+    @try {
+        if ( ![ self isCancelled ] )
+            {
+            NSFileManager* fileManager = [ NSFileManager defaultManager ];
+
+            /* 1. Ignores hidden files
+             * 2. Ignores package descendents */
+            NSDirectoryEnumerator* dirEnumor = [ fileManager enumeratorAtURL: self._rootURL
+                                                  includingPropertiesForKeys: nil
+                                                                     options: NSDirectoryEnumerationSkipsHiddenFiles
+                                                                                | NSDirectoryEnumerationSkipsPackageDescendants
+                                                                errorHandler: nil ];
+            for ( NSURL* url in dirEnumor )
+                {
+                if ( [ self isCancelled ] )
+                    {
+                    NSLog( @"# User cancelled this operation #" );
+                    break;
+                    }
+
+                NSLog( @"%@", url );
+                }
+            }
+        } @catch ( NSException* _Ex )
+            {
+            @synchronized ( self )
+                {
+                if ( !self._catchedExInMainTask )
+                    self->_catchedExInMainTask = [ NSMutableArray array ];
+
+                [ self->_catchedExInMainTask addObject: _Ex ];
+                }
+            }
+    }
+
+@end // LIGetPathsOperation
 
 /////////////////////////////////////////////////////////////////////////////
 
