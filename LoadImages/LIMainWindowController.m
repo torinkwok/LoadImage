@@ -61,6 +61,7 @@
 #pragma mark -
 
 @interface LIMainWindowController ( LIPartForTableViewDelegate )
+- ( IBAction ) tableViewDoubleClickAction: ( id )_Sender;
 - ( void ) tableView: ( NSTableView* )_TableView didClickTableColumn: ( NSTableColumn* )_Column;
 @end // LIMainWindowController + LIPartForTableViewDelegate
 
@@ -69,6 +70,7 @@
 // LIMainWindowController class
 @implementation LIMainWindowController
 
+#pragma mark Synthesized Properties
 @synthesize _tableView;
 
 @synthesize _startButton;
@@ -82,7 +84,6 @@
 @synthesize _imagesFoundStr;
 @synthesize _scanCount;
 
-#pragma mark -
 #pragma mark Conforms <NSNibAwaking> protocol
 - ( void ) awakeFromNib
     {
@@ -91,6 +92,9 @@
                                                 selector: @selector( anyThread_handleLoadedImage: )
                                                     name: LILoadImageOperationLoadImageDidFinish
                                                   object: nil ];
+
+    [ self._tableView setTarget: self ];
+    [ self._tableView setDoubleAction: @selector( tableViewDoubleClickAction: ) ];
     }
 
 - ( void ) anyThread_handleLoadedImage: ( NSNotification* )_Notif
@@ -108,7 +112,6 @@
     [ self._tableView reloadData ];
     }
 
-#pragma mark -
 #pragma mark Initializers
 + ( id ) mainWindowController
     {
@@ -126,7 +129,6 @@
     return self;
     }
 
-#pragma mark -
 #pragma mark IBActions
 /* Trigger when user click "Load Images..." button */
 - ( IBAction ) startAction: ( id )_Sender
@@ -192,6 +194,24 @@
 #pragma mark -
 
 @implementation LIMainWindowController ( LIPartForTableViewDelegate )
+
+- ( IBAction ) tableViewDoubleClickAction: ( id )_Sender
+    {
+    NSTableView* tableView = ( NSTableView* )_Sender;
+
+    NSInteger row = [ tableView selectedRow ];
+    if ( row > -1 )
+        {
+        NSString* pathOfSelectedImage = [ self._tableDataSource[ row ] objectForKey: LILoadImageOperationFileInfoPathKey ];
+        NSURL* imageURL = [ NSURL URLWithString: pathOfSelectedImage ];
+
+        // FIXME:
+        NSLog( @"Path: %@", pathOfSelectedImage );
+        NSLog( @"URL: %@", imageURL );
+
+        [ [ NSWorkspace sharedWorkspace ] openURL: [ NSURL URLWithString: pathOfSelectedImage ] ];
+        }
+    }
 
 - ( void ) tableView: ( NSTableView* )_TableView didClickTableColumn: ( NSTableColumn* )_Column
     {

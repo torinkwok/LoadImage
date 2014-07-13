@@ -101,7 +101,7 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
                 NSURL* imageURL = self._rootURL;
 
                 NSString* iamgeName = [ [ imageURL URLByDeletingPathExtension ] lastPathComponent ];
-                NSString* imagePath = [ imageURL path ];
+                NSString* imagePath = [ imageURL absoluteString ];
 
                 NSDate* modifiedDate = nil;
                 [ imageURL getResourceValue: &modifiedDate forKey: NSURLContentModificationDateKey error: nil ];
