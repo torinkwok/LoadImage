@@ -43,13 +43,17 @@ NSString extern* const LILoadImageOperationFileInfoPathKey;
 NSString extern* const LILoadImageOperationFileInfoModifiedDateKey;
 NSString extern* const LILoadImageOperationFileInfoSizeKey;
 
+// Notification name
+NSString extern* const LILoadImageOperationLoadImageWillFinish;
+NSString extern* const LILoadImageOperationLoadImageDidFinish;
+
 // LILoadImagesOperation class
 @interface LILoadImagesOperation : NSOperation
 
-@property ( assign, readonly ) NSURL* _rootURL;
-@property ( assign, readonly ) NSMutableDictionary* _userData;
+@property ( retain ) NSURL* _rootURL;
+@property ( copy ) NSMutableDictionary* _userData;
 
-@property ( retain, readonly ) NSMutableArray* _catchedExInMainTask;
+@property ( copy ) NSMutableArray* _catchedExInMainTask;
 
 #pragma mark Initializer(s)
 + ( id ) opetationWith: ( NSURL* )_URL;

@@ -32,6 +32,7 @@
  ****************************************************************************/
 
 #import "LIGetPathsOperation.h"
+#import "LILoadImagesOperation.h"
 
 // LIGetPathsOperation class
 @implementation LIGetPathsOperation
@@ -50,7 +51,10 @@
 - ( id ) initWithURL: ( NSURL* )_URL
     {
     if ( self = [ super init ] )
-        self->_rootURL = _URL;
+        {
+        self._rootURL = _URL;
+        self._operationQueue = [ [ [ NSOperationQueue alloc ] init ] autorelease ];
+        }
 
     return self;
     }
@@ -82,7 +86,10 @@
                     break;
                     }
 
-                NSLog( @"%@", url );
+                LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation opetationWith: url ];
+
+                [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
+                [ self._operationQueue addOperation: loadImageOperation ];
                 }
             }
         } @catch ( NSException* _Ex )
@@ -90,9 +97,9 @@
             @synchronized ( self )
                 {
                 if ( !self._catchedExInMainTask )
-                    self->_catchedExInMainTask = [ NSMutableArray array ];
+                    self._catchedExInMainTask = [ NSMutableArray array ];
 
-                [ self->_catchedExInMainTask addObject: _Ex ];
+                [ self._catchedExInMainTask addObject: _Ex ];
                 }
             }
     }

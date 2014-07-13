@@ -36,10 +36,10 @@
 // LIGetPathsOperation class
 @interface LIGetPathsOperation : NSOperation
 
-@property ( retain, readonly ) NSURL* _rootURL;
-@property ( retain, readonly ) NSOperationQueue* _operationQueue;
+@property ( retain ) NSURL* _rootURL;
+@property ( retain ) NSOperationQueue* _operationQueue;
 
-@property ( retain, readonly ) NSMutableArray* _catchedExInMainTask;
+@property ( retain ) NSMutableArray* _catchedExInMainTask;
 
 #pragma mark Initializer(s)
 + ( id ) opetationWith: ( NSURL* )_URL;

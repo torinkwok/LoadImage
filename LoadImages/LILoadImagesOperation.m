@@ -43,6 +43,10 @@ NSString* const LILoadImageOperationFileInfoPathKey = @"path";
 NSString* const LILoadImageOperationFileInfoModifiedDateKey = @"modifiedDate";
 NSString* const LILoadImageOperationFileInfoSizeKey = @"size";
 
+// Notification name
+NSString extern* const LILoadImageOperationLoadImageWillFinish = @"load image will finish";
+NSString extern* const LILoadImageOperationLoadImageDidFinish = @"load image did finish";
+
 // LILoadImagesOperation class
 @implementation LILoadImagesOperation
 
@@ -61,8 +65,8 @@ NSString* const LILoadImageOperationFileInfoSizeKey = @"size";
     {
     if ( self = [ super init ] )
         {
-        self->_rootURL = _URL;
-        self->_userData = [ NSMutableDictionary dictionary ];
+        self._rootURL = _URL;
+        self._userData = [ NSMutableDictionary dictionary ];
         }
 
     return self;
@@ -89,7 +93,51 @@ NSString* const LILoadImageOperationFileInfoSizeKey = @"size";
 #pragma mark Overrides for main task
 - ( void ) main
     {
-    
+    @try {
+        if ( ![ self isCancelled ] )
+            {
+            if ( [ self isImageFile: self._rootURL ] )
+                {
+                // Post a notification before loading the image
+                if ( ![ self isCancelled ] )
+                    [ [ NSNotificationCenter defaultCenter ] postNotificationName: LILoadImageOperationLoadImageWillFinish
+                                                                           object: self
+                                                                         userInfo: nil ];
+
+                NSURL* imageURL = self._rootURL;
+
+                NSString* iamgeName = [ [ imageURL URLByDeletingPathExtension ] lastPathComponent ];
+                NSString* imagePath = [ imageURL path ];
+
+                NSDate* modifiedDate = nil;
+                [ imageURL getResourceValue: &modifiedDate forKey: NSURLContentModificationDateKey error: nil ];
+
+                NSNumber* imageSize = @0;
+                [ imageURL getResourceValue: &imageSize forKey: NSURLFileSizeKey error: nil ];
+
+                // The entry in self._userData will be added to the data source for table view
+                self._userData[ LILoadImageOperationFileInfoNameKey ] = iamgeName;
+                self._userData[ LILoadImageOperationFileInfoPathKey ] = imagePath;
+                self._userData[ LILoadImageOperationFileInfoModifiedDateKey ] = modifiedDate;
+                self._userData[ LILoadImageOperationFileInfoSizeKey ] = imageSize;
+
+                // Post a notification if the image has been loaded successfully
+                if ( ![ self isCancelled ] )
+                    [ [ NSNotificationCenter defaultCenter ] postNotificationName: LILoadImageOperationLoadImageDidFinish
+                                                                           object: self
+                                                                         userInfo: self._userData ];
+                }
+            }
+        } @catch ( NSException* _Ex )
+            {
+            @synchronized( self )
+                {
+                if ( !self._catchedExInMainTask )
+                    self._catchedExInMainTask = [ NSMutableArray array ];
+
+                [ self._catchedExInMainTask addObject: _Ex ];
+                }
+            }
     }
 
 @end // LILoadImagesOperation
