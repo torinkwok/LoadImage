@@ -44,8 +44,10 @@
 
 @property ( retain ) NSMutableArray* _catchedExInMainTask;
 
+@property ( retain ) NSMutableArray* _cachedPaths;
+
 #pragma mark Initializer(s)
-+ ( id ) opetationWith: ( NSURL* )_URL;
++ ( id ) operationWithURL: ( NSURL* )_URL;
 - ( id ) initWithURL: ( NSURL* )_URL;
 
 #pragma mark Overrides for main task

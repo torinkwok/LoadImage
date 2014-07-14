@@ -55,20 +55,31 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
     }
 
 @synthesize _rootURL;
+@synthesize _rootURLs;
 
 @synthesize _catchedExInMainTask;
 
 #pragma mark Initializer(s)
-+ ( id ) opetationWith: ( NSURL* )_URL
++ ( id ) operationWithURL: ( NSURL* )_URL
     {
-    return [ [ [ [ self class ] alloc ] initWithURL: _URL ] autorelease ];
+    return [ [ self class ] operationWithURLs: @[ _URL ] ];
+    }
+
++ ( id ) operationWithURLs: ( NSArray* )_URLs
+    {
+    return [ [ [ [ self class ] alloc ] initWithURLs: _URLs ] autorelease ];
     }
 
 - ( id ) initWithURL: ( NSURL* )_URL
     {
+    return [ self initWithURLs: @[ _URL ]];
+    }
+
+- ( id ) initWithURLs: ( NSArray* )_URLs
+    {
     if ( self = [ super init ] )
         {
-        self._rootURL = _URL;
+        self._rootURLs = _URLs;
 
         self->_isFinished = NO;
         self->_isExecuting = NO;
@@ -148,41 +159,45 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
 - ( void ) main
     {
     @try {
-        if ( ![ self isCancelled ] )
-            {
-            if ( [ self isImageFile: self._rootURL ] )
+        [ self._rootURLs enumerateObjectsUsingBlock:
+            ^( NSURL* _URL, NSUInteger _Index, BOOL* _Stop )
                 {
-                // Post a notification before loading the image
                 if ( ![ self isCancelled ] )
-                    [ [ NSNotificationCenter defaultCenter ] postNotificationName: LILoadImageOperationLoadImageWillFinish
-                                                                           object: self
-                                                                         userInfo: nil ];
+                    {
+                    if ( [ self isImageFile: _URL ] )
+                        {
+                        // Post a notification before loading the image
+                        if ( ![ self isCancelled ] )
+                            [ [ NSNotificationCenter defaultCenter ] postNotificationName: LILoadImageOperationLoadImageWillFinish
+                                                                                   object: self
+                                                                                 userInfo: nil ];
 
-                NSURL* imageURL = self._rootURL;
+                        NSURL* imageURL = _URL;
 
-                NSString* iamgeName = [ [ imageURL URLByDeletingPathExtension ] lastPathComponent ];
-                NSString* imagePath = [ imageURL absoluteString ];
+                        NSString* iamgeName = [ [ imageURL URLByDeletingPathExtension ] lastPathComponent ];
+                        NSString* imagePath = [ imageURL absoluteString ];
 
-                NSDate* modifiedDate = nil;
-                [ imageURL getResourceValue: &modifiedDate forKey: NSURLContentModificationDateKey error: nil ];
+                        NSDate* modifiedDate = nil;
+                        [ imageURL getResourceValue: &modifiedDate forKey: NSURLContentModificationDateKey error: nil ];
 
-                NSNumber* imageSize = @0;
-                [ imageURL getResourceValue: &imageSize forKey: NSURLFileSizeKey error: nil ];
+                        NSNumber* imageSize = @0;
+                        [ imageURL getResourceValue: &imageSize forKey: NSURLFileSizeKey error: nil ];
 
-                // The entry in userInfo will be added to the data source for table view
-                NSDictionary* userInfo = @{ LILoadImageOperationFileInfoNameKey : iamgeName
-                                          , LILoadImageOperationFileInfoPathKey : imagePath
-                                          , LILoadImageOperationFileInfoModifiedDateKey : modifiedDate
-                                          , LILoadImageOperationFileInfoSizeKey : [ NSNumber numberWithFloat: imageSize.floatValue / 1024 ]
-                                          };
+                        // The entry in userInfo will be added to the data source for table view
+                        NSDictionary* userInfo = @{ LILoadImageOperationFileInfoNameKey : iamgeName
+                                                  , LILoadImageOperationFileInfoPathKey : imagePath
+                                                  , LILoadImageOperationFileInfoModifiedDateKey : modifiedDate
+                                                  , LILoadImageOperationFileInfoSizeKey : [ NSNumber numberWithFloat: imageSize.floatValue / 1024 ]
+                                                  };
 
-                // Post a notification if the image has been loaded successfully
-                if ( ![ self isCancelled ] )
-                    [ [ NSNotificationCenter defaultCenter ] postNotificationName: LILoadImageOperationLoadImageDidFinish
-                                                                           object: self
-                                                                         userInfo: userInfo ];
-                }
-            }
+                        // Post a notification if the image has been loaded successfully
+                        if ( ![ self isCancelled ] )
+                            [ [ NSNotificationCenter defaultCenter ] postNotificationName: LILoadImageOperationLoadImageDidFinish
+                                                                                   object: self
+                                                                                 userInfo: userInfo ];
+                        }
+                    }
+                } ];
 
         // Notify the observers that our operation is now finished with its task
         // regardless of whether the operation is cancelled or not.

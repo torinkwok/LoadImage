@@ -51,12 +51,15 @@ NSString extern* const LILoadImageOperationLoadImageDidFinish;
 @interface LILoadImagesOperation : NSOperation
 
 @property ( retain ) NSURL* _rootURL;
+@property ( retain ) NSArray* _rootURLs;
 
 @property ( retain ) NSMutableArray* _catchedExInMainTask;
 
 #pragma mark Initializer(s)
-+ ( id ) opetationWith: ( NSURL* )_URL;
++ ( id ) operationWithURL: ( NSURL* )_URL;
++ ( id ) operationWithURLs: ( NSArray* )_URLs;
 - ( id ) initWithURL: ( NSURL* )_URL;
+- ( id ) initWithURLs: ( NSArray* )_URLs;
 
 #pragma mark Misc
 - ( BOOL ) isImageFile: ( NSURL* )_FileForTesting;

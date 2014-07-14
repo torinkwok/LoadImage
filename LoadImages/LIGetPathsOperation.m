@@ -45,8 +45,10 @@
 
 @synthesize _catchedExInMainTask;
 
+@synthesize _cachedPaths;
+
 #pragma mark Initializer(s)
-+ ( id ) opetationWith: ( NSURL* )_URL
++ ( id ) operationWithURL: ( NSURL* )_URL
     {
     return [ [ [ [ self class ] alloc ] initWithURL: _URL ] autorelease ];
     }
@@ -57,6 +59,8 @@
         {
         self._rootURL = _URL;
         self._operationQueue = [ [ [ NSOperationQueue alloc ] init ] autorelease ];
+
+        self._cachedPaths = [ NSMutableArray arrayWithCapacity: 10 ];
 
         self->_isExecuting = NO;
         self->_isFinished = NO;
@@ -157,6 +161,7 @@
                                                                      options: NSDirectoryEnumerationSkipsHiddenFiles
                                                                                 | NSDirectoryEnumerationSkipsPackageDescendants
                                                                 errorHandler: nil ];
+            NSInteger cacheCount = 10;
             for ( NSURL* url in dirEnumor )
                 {
                 if ( [ self isCancelled ] )
@@ -165,7 +170,16 @@
                     break;
                     }
 
-                LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation opetationWith: url ];
+                if ( cacheCount-- > 0 )
+                    [ self._cachedPaths addObject: url ];
+                else
+                    {
+                    cacheCount = 10;
+
+                    [ self._cachedPaths removeAllObjects ];
+                    }
+
+                LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation operationWithURL: url ];
 
                 [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
                 [ self._operationQueue addOperation: loadImageOperation ];

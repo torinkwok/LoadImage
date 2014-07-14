@@ -154,7 +154,7 @@
                 [ self._tableDataSource removeAllObjects ];
                 [ self._tableView reloadData ];
 
-                self._getPathsOperation = [ LIGetPathsOperation opetationWith: dirURL ];
+                self._getPathsOperation = [ LIGetPathsOperation operationWithURL: dirURL ];
                 [ self._operationQueue addOperation: self._getPathsOperation ];
 //                [ [ NSOperationQueue currentQueue ] addOperation: getPathsOperation ];
 //                [ getPathsOperation start ];
