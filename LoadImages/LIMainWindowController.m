@@ -156,8 +156,6 @@
 
                 self._getPathsOperation = [ LIGetPathsOperation operationWithURL: dirURL ];
                 [ self._operationQueue addOperation: self._getPathsOperation ];
-//                [ [ NSOperationQueue currentQueue ] addOperation: getPathsOperation ];
-//                [ getPathsOperation start ];
             #if 0
                 [ self._tableView selectColumnIndexes: nil byExtendingSelection: NO ];
 
