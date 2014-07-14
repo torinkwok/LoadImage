@@ -174,15 +174,16 @@
                     [ self._cachedPaths addObject: url ];
                 else
                     {
+                    LILoadImagesOperation* loadImageOperation =
+                        [ LILoadImagesOperation operationWithURLs: self._cachedPaths ];
+
+                    [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
+                    [ self._operationQueue addOperation: loadImageOperation ];
+
                     cacheCount = 10;
 
                     [ self._cachedPaths removeAllObjects ];
                     }
-
-                LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation operationWithURL: url ];
-
-                [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
-                [ self._operationQueue addOperation: loadImageOperation ];
                 }
             }
 

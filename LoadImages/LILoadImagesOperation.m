@@ -54,7 +54,6 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
     BOOL _isExecuting;
     }
 
-@synthesize _rootURL;
 @synthesize _rootURLs;
 
 @synthesize _catchedExInMainTask;
@@ -80,7 +79,7 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
     if ( self = [ super init ] )
         {
         self._rootURLs = _URLs;
-
+        
         self->_isFinished = NO;
         self->_isExecuting = NO;
         }

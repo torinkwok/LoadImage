@@ -50,8 +50,7 @@ NSString extern* const LILoadImageOperationLoadImageDidFinish;
 // LILoadImagesOperation class
 @interface LILoadImagesOperation : NSOperation
 
-@property ( retain ) NSURL* _rootURL;
-@property ( retain ) NSArray* _rootURLs;
+@property ( copy ) NSArray* _rootURLs;
 
 @property ( retain ) NSMutableArray* _catchedExInMainTask;
 
