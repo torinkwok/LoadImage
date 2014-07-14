@@ -66,7 +66,8 @@
     return self;
     }
 
-#pragma mark Overrides for implementation of concurrent operation
+#pragma mark Part for implementation of concurrent operation
+#if 1
 - ( void ) start
     {
     // Always check for cancellation before launching the task.
@@ -81,8 +82,8 @@
 
     // If the operation is not canceled, begin executing the task.
     [ self willChangeValueForKey: @"_isExecuting" ];
-    [ NSThread detachNewThreadSelector: @selector( main ) toTarget: self withObject: nil ];
-    self->_isExecuting = YES;
+        [ NSThread detachNewThreadSelector: @selector( main ) toTarget: self withObject: nil ];
+        self->_isExecuting = YES;
     [ self didChangeValueForKey: @"_isExecuting" ];
     }
 
@@ -101,6 +102,23 @@
     return self->_isFinished;
     }
 
+- ( BOOL ) isReady
+    {
+    return NO;
+    }
+
+- ( void ) completeOperation
+    {
+    [ self willChangeValueForKey: @"_isExecuting" ];
+    [ self willChangeValueForKey: @"_isFinished" ];
+
+        self->_isExecuting = NO;
+        self->_isFinished = YES;
+
+    [ self didChangeValueForKey: @"_isExecuting" ];
+    [ self didChangeValueForKey: @"_isFinished" ];
+    }
+#endif
 #pragma mark Overrides for main task
 
 /* Because of the extra constraint in open panel, ( [ openPanel setCanChooseFiles: NO ] )
@@ -131,11 +149,18 @@
                 LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation opetationWith: url ];
 
                 [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
-//                [ self._operationQueue addOperation: loadImageOperation ];
-//                [ [ NSOperationQueue currentQueue ] addOperation: loadImageOperation ];
-                [ loadImageOperation start ];
+                [ self._operationQueue addOperation: loadImageOperation ];
+//                NSOperationQueue* currentQueue = [ NSOperationQueue currentQueue ];
+//                NSOperationQueue* mainQueue = [ NSOperationQueue mainQueue ];
+//                [ mainQueue addOperation: loadImageOperation ];
+//                [ loadImageOperation start ];
                 }
             }
+
+        // Notify the observers that our operation is now finished with its work,
+        // regardless of the operation is canceled or not.
+        [ self completeOperation ];
+
         } @catch ( NSException* _Ex )
             {
             @synchronized ( self )

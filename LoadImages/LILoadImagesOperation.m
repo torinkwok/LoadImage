@@ -49,6 +49,10 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
 
 // LILoadImagesOperation class
 @implementation LILoadImagesOperation
+    {
+    BOOL _isFinished;
+    BOOL _isExecuting;
+    }
 
 @synthesize _rootURL;
 
@@ -63,7 +67,12 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
 - ( id ) initWithURL: ( NSURL* )_URL
     {
     if ( self = [ super init ] )
+        {
         self._rootURL = _URL;
+
+        self->_isFinished = NO;
+        self->_isExecuting = NO;
+        }
 
     return self;
     }
@@ -84,6 +93,57 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
     return isImageFile;
     }
 
+#pragma mark Part for implementation of concurrent operation
+#if 1
+- ( void ) start
+    {
+    if ( [ self isCancelled ] )
+        {
+        [ self willChangeValueForKey: @"_isFinished" ];
+            self->_isFinished = YES;
+        [ self didChangeValueForKey: @"_isFinished" ];
+
+        return;
+        }
+
+    [ self willChangeValueForKey: @"_isExecuting" ];
+        [ NSThread detachNewThreadSelector: @selector( main ) toTarget: self withObject: nil ];
+        self->_isExecuting = YES;
+    [ self didChangeValueForKey: @"_isExecuting" ];
+    }
+
+- ( BOOL ) isConcurrent
+    {
+    return YES;
+    }
+
+- ( BOOL ) isFinished
+    {
+    return self->_isFinished;
+    }
+
+- ( BOOL ) isExecuting
+    {
+    return self->_isExecuting;
+    }
+
+- ( BOOL ) isReady
+    {
+    return NO;
+    }
+
+- ( void ) completeOperation
+    {
+    [ self willChangeValueForKey: @"_isExecuting" ];
+    [ self willChangeValueForKey: @"_isFinished" ];
+
+        self->_isExecuting = NO;
+        self->_isFinished = YES;
+
+    [ self didChangeValueForKey: @"_isExecuting" ];
+    [ self didChangeValueForKey: @"_isFinished" ];
+    }
+#endif
 #pragma mark Overrides for main task
 - ( void ) main
     {
@@ -123,6 +183,11 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
                                                                          userInfo: userInfo ];
                 }
             }
+
+        // Notify the observers that our operation is now finished with its task
+        // regardless of the operation is cancelled of not.
+        [ self completeOperation ];
+
         } @catch ( NSException* _Ex )
             {
             @synchronized( self )
