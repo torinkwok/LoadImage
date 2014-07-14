@@ -59,6 +59,7 @@
         {
         self._rootURL = _URL;
         self._operationQueue = [ [ [ NSOperationQueue alloc ] init ] autorelease ];
+        [ self._operationQueue setMaxConcurrentOperationCount: NSOperationQueueDefaultMaxConcurrentOperationCount ];
 
         self._cachedPaths = [ NSMutableArray arrayWithCapacity: 10 ];
 
@@ -178,7 +179,7 @@
                         [ LILoadImagesOperation operationWithURLs: self._cachedPaths ];
 
                     [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
-                    [ self._operationQueue addOperation: loadImageOperation ];
+                    [ self._operationQueue addOperations: @[ loadImageOperation ] waitUntilFinished: NO ];
 
                     cacheCount = 10;
 

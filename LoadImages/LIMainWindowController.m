@@ -155,7 +155,7 @@
                 [ self._tableView reloadData ];
 
                 self._getPathsOperation = [ LIGetPathsOperation operationWithURL: dirURL ];
-                [ self._operationQueue addOperation: self._getPathsOperation ];
+                [ self._operationQueue addOperations: @[ self._getPathsOperation ] waitUntilFinished: NO ];
             #if 0
                 [ self._tableView selectColumnIndexes: nil byExtendingSelection: NO ];
 
@@ -173,12 +173,6 @@
 - ( IBAction ) stopAction: ( id )_Sender
     {
 
-    }
-
-- ( IBAction ) testingForCompletionBlock: ( id )_Sender
-    {
-    NSLog( @"Is finished: %@", self._getPathsOperation._isFinished ? @"YES" : @"NO" );
-    NSLog( @"Is executing: %@", self._getPathsOperation._isExecuting ? @"YES" : @"NO" );
     }
 
 @end // LIMainWindowController
