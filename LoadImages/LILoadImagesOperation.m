@@ -186,7 +186,7 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
 
         // Notify the observers that our operation is now finished with its task
         // regardless of whether the operation is cancelled or not.
-//        [ self completeOperation ];
+        [ self completeOperation ];
 
         } @catch ( NSException* _Ex )
             {

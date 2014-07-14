@@ -168,18 +168,13 @@
                 LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation opetationWith: url ];
 
                 [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
-//                [ loadImageOperation addDependency: self ];
                 [ self._operationQueue addOperation: loadImageOperation ];
-//                NSOperationQueue* currentQueue = [ NSOperationQueue currentQueue ];
-//                NSOperationQueue* mainQueue = [ NSOperationQueue mainQueue ];
-//                [ mainQueue addOperation: loadImageOperation ];
-//                [ loadImageOperation start ];
                 }
             }
 
         // Notify the observers that our operation is now finished with its work,
         // regardless of whether the operation is cancelled or not.
-//        [ self completeOperation ];
+        [ self completeOperation ];
 
         } @catch ( NSException* _Ex )
             {
