@@ -36,6 +36,10 @@
 
 // LIGetPathsOperation class
 @implementation LIGetPathsOperation
+    {
+    BOOL _isExecuting;
+    BOOL _isFinished;
+    }
 
 @synthesize _rootURL;
 @synthesize _operationQueue;
@@ -54,9 +58,47 @@
         {
         self._rootURL = _URL;
         self._operationQueue = [ [ [ NSOperationQueue alloc ] init ] autorelease ];
+
+        self->_isExecuting = NO;
+        self->_isFinished = NO;
         }
 
     return self;
+    }
+
+#pragma mark Overrides for implementation of concurrent operation
+- ( void ) start
+    {
+    // Always check for cancellation before launching the task.
+    if ( [ self isCancelled ] )
+        {
+        [ self willChangeValueForKey: @"_isFinished" ];
+            self->_isFinished = YES;
+        [ self didChangeValueForKey: @"_isFinished" ];
+
+        return;
+        }
+
+    // If the operation is not canceled, begin executing the task.
+    [ self willChangeValueForKey: @"_isExecuting" ];
+    [ NSThread detachNewThreadSelector: @selector( main ) toTarget: self withObject: nil ];
+    self->_isExecuting = YES;
+    [ self didChangeValueForKey: @"_isExecuting" ];
+    }
+
+- ( BOOL ) isConcurrent
+    {
+    return YES;
+    }
+
+- ( BOOL ) isExecuting
+    {
+    return self->_isExecuting;
+    }
+
+- ( BOOL ) isFinished
+    {
+    return self->_isFinished;
     }
 
 #pragma mark Overrides for main task
@@ -89,7 +131,9 @@
                 LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation opetationWith: url ];
 
                 [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
-                [ self._operationQueue addOperation: loadImageOperation ];
+//                [ self._operationQueue addOperation: loadImageOperation ];
+//                [ [ NSOperationQueue currentQueue ] addOperation: loadImageOperation ];
+                [ loadImageOperation start ];
                 }
             }
         } @catch ( NSException* _Ex )

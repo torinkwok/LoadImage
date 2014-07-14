@@ -154,7 +154,9 @@
                 [ self._tableView reloadData ];
 
                 LIGetPathsOperation* getPathsOperation = [ LIGetPathsOperation opetationWith: dirURL ];
-                [ self._operationQueue addOperation: getPathsOperation ];
+//                [ self._operationQueue addOperation: getPathsOperation ];
+//                [ [ NSOperationQueue currentQueue ] addOperation: getPathsOperation ];
+                [ getPathsOperation start ];
             #if 0
                 [ self._tableView selectColumnIndexes: nil byExtendingSelection: NO ];
 
