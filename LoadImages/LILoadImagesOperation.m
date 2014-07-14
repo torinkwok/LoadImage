@@ -114,7 +114,7 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
 
 - ( BOOL ) isConcurrent
     {
-    return YES;
+    return NO;
     }
 
 - ( BOOL ) isFinished
@@ -129,7 +129,7 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
 
 - ( BOOL ) isReady
     {
-    return NO;
+    return [ super isReady ];
     }
 
 - ( void ) completeOperation
@@ -185,8 +185,8 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
             }
 
         // Notify the observers that our operation is now finished with its task
-        // regardless of the operation is cancelled of not.
-        [ self completeOperation ];
+        // regardless of whether the operation is cancelled or not.
+//        [ self completeOperation ];
 
         } @catch ( NSException* _Ex )
             {

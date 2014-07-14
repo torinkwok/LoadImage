@@ -89,7 +89,7 @@
 
 - ( BOOL ) isConcurrent
     {
-    return YES;
+    return NO;
     }
 
 - ( BOOL ) isExecuting
@@ -104,7 +104,7 @@
 
 - ( BOOL ) isReady
     {
-    return NO;
+    return [ super isReady ];
     }
 
 - ( void ) completeOperation
@@ -158,7 +158,7 @@
             }
 
         // Notify the observers that our operation is now finished with its work,
-        // regardless of the operation is canceled or not.
+        // regardless of whether the operation is cancelled or not.
         [ self completeOperation ];
 
         } @catch ( NSException* _Ex )
