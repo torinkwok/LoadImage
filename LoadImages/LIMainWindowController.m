@@ -155,6 +155,16 @@
 
                 LIGetPathsOperation* getPathsOperation = [ LIGetPathsOperation opetationWith: dirURL ];
                 [ self._operationQueue addOperation: getPathsOperation ];
+            #if 0
+                [ self._tableView selectColumnIndexes: nil byExtendingSelection: NO ];
+
+                NSArray* columns = [ self._tableView tableColumns ];
+                [ columns enumerateObjectsUsingBlock:
+                    ^( NSTableColumn* _Column, NSUInteger _Index, BOOL* _Stop )
+                        {
+                        [ self._tableView setIndicatorImage: nil inTableColumn: _Column ];
+                        } ];
+            #endif
                 }
             } ];
     }
