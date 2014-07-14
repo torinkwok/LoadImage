@@ -36,10 +36,9 @@
 
 // LIGetPathsOperation class
 @implementation LIGetPathsOperation
-    {
-    BOOL _isExecuting;
-    BOOL _isFinished;
-    }
+
+@synthesize _isExecuting;
+@synthesize _isFinished;
 
 @synthesize _rootURL;
 @synthesize _operationQueue;
@@ -66,6 +65,11 @@
     return self;
     }
 
+- ( void ) dealloc
+    {
+    [ super dealloc ];
+    }
+
 #pragma mark Part for implementation of concurrent operation
 #if 1
 - ( void ) start
@@ -85,6 +89,21 @@
         [ NSThread detachNewThreadSelector: @selector( main ) toTarget: self withObject: nil ];
         self->_isExecuting = YES;
     [ self didChangeValueForKey: @"_isExecuting" ];
+
+    #if 1   // TESTME:
+    [ self setCompletionBlock:
+        ^( void )
+            {
+            [ self willChangeValueForKey: @"_isFinished" ];
+            [ self willChangeValueForKey: @"_isExecuting" ];
+
+                self->_isFinished = YES;
+                self->_isExecuting = NO;
+
+            [ self didChangeValueForKey: @"_isFinished" ];
+            [ self didChangeValueForKey: @"_isExecuting" ];
+            } ];
+    #endif
     }
 
 - ( BOOL ) isConcurrent
@@ -149,6 +168,7 @@
                 LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation opetationWith: url ];
 
                 [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
+//                [ loadImageOperation addDependency: self ];
                 [ self._operationQueue addOperation: loadImageOperation ];
 //                NSOperationQueue* currentQueue = [ NSOperationQueue currentQueue ];
 //                NSOperationQueue* mainQueue = [ NSOperationQueue mainQueue ];
@@ -159,7 +179,7 @@
 
         // Notify the observers that our operation is now finished with its work,
         // regardless of whether the operation is cancelled or not.
-        [ self completeOperation ];
+//        [ self completeOperation ];
 
         } @catch ( NSException* _Ex )
             {

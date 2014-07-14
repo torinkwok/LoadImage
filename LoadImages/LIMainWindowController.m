@@ -78,6 +78,7 @@
 @synthesize _progressIndicator;
 
 @synthesize _operationQueue; // Queue of NSOperations ( 1 for parsing file system, 2+ for loading image files
+    @synthesize _getPathsOperation;
 
 @synthesize _tableDataSource;
 @synthesize _timer;
@@ -153,8 +154,8 @@
                 [ self._tableDataSource removeAllObjects ];
                 [ self._tableView reloadData ];
 
-                LIGetPathsOperation* getPathsOperation = [ LIGetPathsOperation opetationWith: dirURL ];
-                [ self._operationQueue addOperation: getPathsOperation ];
+                self._getPathsOperation = [ LIGetPathsOperation opetationWith: dirURL ];
+                [ self._operationQueue addOperation: self._getPathsOperation ];
 //                [ [ NSOperationQueue currentQueue ] addOperation: getPathsOperation ];
 //                [ getPathsOperation start ];
             #if 0
@@ -174,6 +175,12 @@
 - ( IBAction ) stopAction: ( id )_Sender
     {
 
+    }
+
+- ( IBAction ) testingForCompletionBlock: ( id )_Sender
+    {
+    NSLog( @"Is finished: %@", self._getPathsOperation._isFinished ? @"YES" : @"NO" );
+    NSLog( @"Is executing: %@", self._getPathsOperation._isExecuting ? @"YES" : @"NO" );
     }
 
 @end // LIMainWindowController

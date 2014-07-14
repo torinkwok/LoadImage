@@ -33,6 +33,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class LIGetPathsOperation;
+
 // LIMainWindowController class
 @interface LIMainWindowController : NSWindowController <NSTableViewDataSource, NSTableViewDelegate>
 
@@ -44,6 +46,7 @@
 @property ( assign ) IBOutlet NSProgressIndicator* _progressIndicator;
 
 @property ( retain ) NSOperationQueue* _operationQueue;
+    @property ( retain ) LIGetPathsOperation* _getPathsOperation;
 
 + ( id ) mainWindowController;
 

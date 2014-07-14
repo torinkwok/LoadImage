@@ -36,6 +36,9 @@
 // LIGetPathsOperation class
 @interface LIGetPathsOperation : NSOperation
 
+@property ( assign ) BOOL _isExecuting;
+@property ( assign ) BOOL _isFinished;
+
 @property ( retain ) NSURL* _rootURL;
 @property ( retain ) NSOperationQueue* _operationQueue;
 
