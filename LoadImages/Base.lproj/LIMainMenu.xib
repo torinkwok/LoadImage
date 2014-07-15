@@ -660,19 +660,6 @@
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem title="Operations" id="r5m-ox-6cv">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Operations" id="yr8-Dd-afh">
-                        <items>
-                            <menuItem title="Testing for Completion Block" id="ccT-7p-byi">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="testingForCompletionBlock:" target="-1" id="yTZ-Vi-z6u"/>
-                                </connections>
-                            </menuItem>
-                        </items>
-                    </menu>
-                </menuItem>
             </items>
         </menu>
     </objects>
