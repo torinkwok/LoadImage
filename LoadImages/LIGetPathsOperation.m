@@ -82,31 +82,32 @@
     // Always check for cancellation before launching the task.
     if ( [ self isCancelled ] )
         {
-        [ self willChangeValueForKey: @"_isFinished" ];
+        [ self willChangeValueForKey: @"isFinished" ];
             self->_isFinished = YES;
-        [ self didChangeValueForKey: @"_isFinished" ];
+        [ self didChangeValueForKey: @"isFinished" ];
 
         return;
         }
 
     // If the operation is not canceled, begin executing the task.
-    [ self willChangeValueForKey: @"_isExecuting" ];
+    [ self willChangeValueForKey: @"isExecuting" ];
         [ NSThread detachNewThreadSelector: @selector( main ) toTarget: self withObject: nil ];
         self->_isExecuting = YES;
-    [ self didChangeValueForKey: @"_isExecuting" ];
+    [ self didChangeValueForKey: @"isExecuting" ];
 
     #if 1   // TESTME:
     [ self setCompletionBlock:
         ^( void )
             {
-            [ self willChangeValueForKey: @"_isFinished" ];
-            [ self willChangeValueForKey: @"_isExecuting" ];
+            NSLog( @"FuK" );
+            [ self willChangeValueForKey: @"isFinished" ];
+            [ self willChangeValueForKey: @"isExecuting" ];
 
                 self->_isFinished = YES;
                 self->_isExecuting = NO;
 
-            [ self didChangeValueForKey: @"_isFinished" ];
-            [ self didChangeValueForKey: @"_isExecuting" ];
+            [ self didChangeValueForKey: @"isFinished" ];
+            [ self didChangeValueForKey: @"isExecuting" ];
             } ];
     #endif
     }
@@ -133,14 +134,14 @@
 
 - ( void ) completeOperation
     {
-    [ self willChangeValueForKey: @"_isExecuting" ];
-    [ self willChangeValueForKey: @"_isFinished" ];
+    [ self willChangeValueForKey: @"isExecuting" ];
+    [ self willChangeValueForKey: @"isFinished" ];
 
         self->_isExecuting = NO;
         self->_isFinished = YES;
 
-    [ self didChangeValueForKey: @"_isExecuting" ];
-    [ self didChangeValueForKey: @"_isFinished" ];
+    [ self didChangeValueForKey: @"isExecuting" ];
+    [ self didChangeValueForKey: @"isFinished" ];
     }
 #endif
 #pragma mark Overrides for main task

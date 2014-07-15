@@ -109,17 +109,17 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
     {
     if ( [ self isCancelled ] )
         {
-        [ self willChangeValueForKey: @"_isFinished" ];
+        [ self willChangeValueForKey: @"isFinished" ];
             self->_isFinished = YES;
-        [ self didChangeValueForKey: @"_isFinished" ];
+        [ self didChangeValueForKey: @"isFinished" ];
 
         return;
         }
 
-    [ self willChangeValueForKey: @"_isExecuting" ];
+    [ self willChangeValueForKey: @"isExecuting" ];
         [ NSThread detachNewThreadSelector: @selector( main ) toTarget: self withObject: nil ];
         self->_isExecuting = YES;
-    [ self didChangeValueForKey: @"_isExecuting" ];
+    [ self didChangeValueForKey: @"isExecuting" ];
     }
 
 - ( BOOL ) isConcurrent
@@ -144,14 +144,14 @@ NSString* const LILoadImageOperationLoadImageDidFinish = @"load image did finish
 
 - ( void ) completeOperation
     {
-    [ self willChangeValueForKey: @"_isExecuting" ];
-    [ self willChangeValueForKey: @"_isFinished" ];
+    [ self willChangeValueForKey: @"isExecuting" ];
+    [ self willChangeValueForKey: @"isFinished" ];
 
         self->_isExecuting = NO;
         self->_isFinished = YES;
 
-    [ self didChangeValueForKey: @"_isExecuting" ];
-    [ self didChangeValueForKey: @"_isFinished" ];
+    [ self didChangeValueForKey: @"isExecuting" ];
+    [ self didChangeValueForKey: @"isFinished" ];
     }
 #endif
 #pragma mark Overrides for main task
