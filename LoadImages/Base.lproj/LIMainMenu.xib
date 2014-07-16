@@ -648,6 +648,19 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="GCD" id="YCz-ze-U6V">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="GCD" id="mM4-fO-j5z">
+                        <items>
+                            <menuItem title="Print the Default Queue" id="H5S-LE-tRB">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="printTheDefaultQueue:" target="-1" id="pA6-LT-h7R"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Help" id="wpr-3q-Mcd">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">

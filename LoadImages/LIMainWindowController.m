@@ -35,6 +35,38 @@
 #import "LIGetPathsOperation.h"
 #import "LILoadImagesOperation.h"
 
+void ( ^getPathsBlock )( NSURL* ) =
+    ^( NSURL* _URL )
+        {
+        NSMutableArray* cachedPaths = [ NSMutableArray array ];
+        NSFileManager* fileManager = [ NSFileManager defaultManager ];
+
+        /* 1. Ignores hidden files
+         * 2. Ignores package descendents */
+        NSDirectoryEnumerator* dirEnumor = [ fileManager enumeratorAtURL: _URL
+                                              includingPropertiesForKeys: nil
+                                                                 options: NSDirectoryEnumerationSkipsHiddenFiles
+                                                                            | NSDirectoryEnumerationSkipsPackageDescendants
+                                                            errorHandler: nil ];
+        NSInteger cacheCount = 10;
+        for ( NSURL* url in dirEnumor )
+            {
+            if ( cacheCount-- > 0 )
+                [ cachedPaths addObject: url ];
+            else
+                {
+                LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation operationWithURLs: cachedPaths ];
+
+                [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
+//                    [ self._operationQueue addOperations: @[ loadImageOperation ] waitUntilFinished: NO ];
+
+                cacheCount = 10;
+
+                [ cachedPaths removeAllObjects ];
+                }
+            }
+        };
+
 // Announo
 @interface LIMainWindowController ()
     {
@@ -156,6 +188,8 @@
 
                 self._getPathsOperation = [ LIGetPathsOperation operationWithURL: dirURL ];
                 [ self._operationQueue addOperations: @[ self._getPathsOperation ] waitUntilFinished: NO ];
+
+                GCD_QUEUE_TESTING;
             #if 0
                 [ self._tableView selectColumnIndexes: nil byExtendingSelection: NO ];
 
@@ -253,6 +287,18 @@
 
     else if ( [ [ currentIndicatorImage name ] isEqualToString: descendingSortIndicatorName ] )
         [ _TableView setIndicatorImage: ascendingSortIndicatorImage inTableColumn: _Column ];
+    }
+
+#pragma mark The New Journey for GCD
+- ( IBAction ) printTheDefaultQueue: ( id )_Sender
+    {
+    dispatch_queue_t globalDefaultQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
+    NSLog( @"Global Dispatch Queue with Default Priority: %@ #%@", globalDefaultQueue, NSStringFromSelector( _cmd ) );
+
+    dispatch_queue_t customDefaultQueue = dispatch_queue_create( "individual.TongG.LoadImages.", DISPATCH_QUEUE_CONCURRENT );
+    NSLog( @"Custom Dispatch Queue with Default Priority: %p", customDefaultQueue );
+
+    GCD_QUEUE_TESTING;
     }
 
 @end // LIMainWindowController + LIPartForTableViewDelegate

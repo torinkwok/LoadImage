@@ -36,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		833978CA1976927600039C90 /* LICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LICommon.h; path = LoadImages/LICommon.h; sourceTree = "<group>"; };
 		833CEB1F19714688005FD0B6 /* LoadImages.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoadImages.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		833CEB2219714688005FD0B6 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		833CEB2519714688005FD0B6 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -89,6 +90,7 @@
 		833CEB1619714688005FD0B6 = {
 			isa = PBXGroup;
 			children = (
+				833978CA1976927600039C90 /* LICommon.h */,
 				833CEB2819714688005FD0B6 /* LoadImages */,
 				833CEB5619714785005FD0B6 /* User Interface */,
 				833CEB4619714688005FD0B6 /* LoadImagesTests */,

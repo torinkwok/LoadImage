@@ -180,6 +180,8 @@
         // regardless of whether the operation is cancelled or not.
         [ self completeOperation ];
 
+        GCD_QUEUE_TESTING;
+
         } @catch ( NSException* _Ex )
             {
             @synchronized ( self )
