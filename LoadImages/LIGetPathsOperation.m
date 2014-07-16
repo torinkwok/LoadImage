@@ -95,21 +95,8 @@
         self->_isExecuting = YES;
     [ self didChangeValueForKey: @"isExecuting" ];
 
-    #if 1   // TESTME:
-    [ self setCompletionBlock:
-        ^( void )
-            {
-            NSLog( @"FuK" );
-            [ self willChangeValueForKey: @"isFinished" ];
-            [ self willChangeValueForKey: @"isExecuting" ];
 
-                self->_isFinished = YES;
-                self->_isExecuting = NO;
-
-            [ self didChangeValueForKey: @"isFinished" ];
-            [ self didChangeValueForKey: @"isExecuting" ];
-            } ];
-    #endif
+    [ self setCompletionBlock: ^{ NSLog( @"# Has finished #" ); } ];
     }
 
 - ( BOOL ) isConcurrent
