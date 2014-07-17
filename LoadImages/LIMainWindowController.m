@@ -65,6 +65,7 @@ void getPathsFunc( void* _Data )
                                                                         | NSDirectoryEnumerationSkipsPackageDescendants
                                                         errorHandler: nil ];
     NSInteger cacheCount = 10;
+
     for ( NSURL* url in dirEnumor )
         {
         if ( cacheCount-- > 0 )
@@ -183,6 +184,8 @@ BOOL isImageFile( NSURL* _FileForTesting )
 @synthesize _operationQueue; // Queue of NSOperations ( 1 for parsing file system, 2+ for loading image files
     @synthesize _getPathsOperation;
 
+@synthesize _customDispatchQueue;
+
 @synthesize _tableDataSource;
 @synthesize _timer;
 @synthesize _imagesFoundStr;
@@ -228,6 +231,8 @@ BOOL isImageFile( NSURL* _FileForTesting )
         {
         self._operationQueue = [ [ [ NSOperationQueue alloc ] init ] autorelease ];
         self._tableDataSource = [ NSMutableArray array ];
+
+        self._customDispatchQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
         }
 
     return self;
@@ -256,9 +261,6 @@ BOOL isImageFile( NSURL* _FileForTesting )
 
                 [ self._tableDataSource removeAllObjects ];
                 [ self._tableView reloadData ];
-
-//                self._getPathsOperation = [ LIGetPathsOperation operationWithURL: dirURL ];
-//                [ self._operationQueue addOperations: @[ self._getPathsOperation ] waitUntilFinished: NO ];
 
                 dispatch_async_f( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 )
                                 , dirURL
@@ -367,6 +369,7 @@ void ( ^fuckBlock )() =
     ^( void )
         {
         sleep( 10 );
+
         NSLog( @"FuckBlock!" );
         };
 
@@ -393,7 +396,6 @@ void fuckFunc( void* _ContextData )
 
     dispatch_async( fuckDispatchQueue, fuckBlock );
     dispatch_async( fuckDispatchQueue, anotherFuckBlock );
-//    dispatch_async_f( fuckDispatchQueue, [ NSDate distantFuture ], fuckFunc );
 
     dispatch_release( fuckDispatchQueue );
     }
@@ -403,6 +405,57 @@ void fuckFinalizer( void* _Context )
     NSLog( @"#%s\n Context: %@", __func__, _Context );
 
     [ ( NSDate* )_Context release ];
+    }
+
+- ( IBAction ) testingForMultipleLoopIteration: ( id )_Sender
+    {
+    size_t count = 20;
+
+    dispatch_queue_t customQueue = dispatch_queue_create( "individual.TongG.customQueue", DISPATCH_QUEUE_SERIAL );
+
+    dispatch_async( customQueue
+                  , ^( void )
+                    {
+                    dispatch_apply( count, self._customDispatchQueue
+                                  , ^( size_t _CurrentIndex )
+                                     {
+                                     NSLog( @"Index#1: %zu", _CurrentIndex );
+                                     sleep( 10 );
+                                     } );
+                    } );
+
+    dispatch_async( customQueue
+                  , ^( void )
+                    {
+                    dispatch_apply( count, self._customDispatchQueue
+                                  , ^( size_t _CurrentIndex )
+                                     {
+                                     NSLog( @"Index#2: %zu", _CurrentIndex );
+                                     sleep( 10 );
+                                     } );
+                    } );
+    }
+
+- ( IBAction ) suspendDefaultGlobalQueue: ( id )_Sender
+    {
+    NSString* suspendTitle = NSLocalizedString( @"Suspend Default Global Queue", nil );
+    NSString* resumeTitle = NSLocalizedString( @"Resume Default Global Queue", nil );
+
+    NSMenuItem* menuItem = ( NSMenuItem* )_Sender;
+    NSString* menuItemTitle = [ menuItem title ];
+
+    if ( [ menuItemTitle isEqualToString: suspendTitle ] )
+        {
+        [ menuItem setTitle: resumeTitle ];
+
+        dispatch_suspend( self._customDispatchQueue );
+        }
+    else if ( [ menuItemTitle isEqualToString: resumeTitle ] )
+        {
+        [ menuItem setTitle: suspendTitle ];
+
+        dispatch_resume( self._customDispatchQueue );
+        }
     }
 
 @end // LIMainWindowController + LIPartForTableViewDelegate

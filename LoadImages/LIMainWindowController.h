@@ -62,6 +62,8 @@ NSString extern* const LILoadImageBlockLoadImageDidFinish;
 @property ( retain ) NSOperationQueue* _operationQueue;
     @property ( retain ) LIGetPathsOperation* _getPathsOperation;
 
+@property ( retain ) dispatch_queue_t _customDispatchQueue;
+
 + ( id ) mainWindowController;
 
 #pragma mark -

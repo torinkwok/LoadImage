@@ -658,10 +658,22 @@
                                     <action selector="printTheDefaultQueue:" target="-1" id="pA6-LT-h7R"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Testing For Finalizer" id="JwL-3L-YpX">
+                            <menuItem title="Testing for Finalizer" id="JwL-3L-YpX">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="testingForFinalizer:" target="-1" id="qaq-HD-uxq"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Testing for Multiple Loop Iterations" id="rXv-nr-q00">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="testingForMultipleLoopIteration:" target="-1" id="Bwa-8t-zi5"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Suspend Default Global Queue" id="5ch-8W-ovN">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="suspendDefaultGlobalQueue:" target="-1" id="Gd0-gH-EAB"/>
                                 </connections>
                             </menuItem>
                         </items>
