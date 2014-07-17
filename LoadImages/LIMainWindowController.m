@@ -257,6 +257,9 @@ BOOL isImageFile( NSURL* _FileForTesting )
                 [ self._tableDataSource removeAllObjects ];
                 [ self._tableView reloadData ];
 
+//                self._getPathsOperation = [ LIGetPathsOperation operationWithURL: dirURL ];
+//                [ self._operationQueue addOperations: @[ self._getPathsOperation ] waitUntilFinished: NO ];
+
                 dispatch_async_f( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 )
                                 , dirURL
                                 , getPathsFunc
