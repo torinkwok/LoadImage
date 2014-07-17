@@ -139,6 +139,8 @@ BOOL isImageFile( NSURL* _FileForTesting )
     return isImageFile;
     }
 
+#pragma mark -
+
 // Announo
 @interface LIMainWindowController ()
     {
@@ -184,6 +186,7 @@ BOOL isImageFile( NSURL* _FileForTesting )
 @synthesize _operationQueue; // Queue of NSOperations ( 1 for parsing file system, 2+ for loading image files
     @synthesize _getPathsOperation;
 
+@synthesize _defaultGlobalDispatchQueue;
 @synthesize _customDispatchQueue;
 
 @synthesize _tableDataSource;
@@ -232,7 +235,8 @@ BOOL isImageFile( NSURL* _FileForTesting )
         self._operationQueue = [ [ [ NSOperationQueue alloc ] init ] autorelease ];
         self._tableDataSource = [ NSMutableArray array ];
 
-        self._customDispatchQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
+        self._defaultGlobalDispatchQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
+        self._customDispatchQueue = dispatch_queue_create( "individual.TongG.fuckDispatchQueue", DISPATCH_QUEUE_CONCURRENT );
         }
 
     return self;
@@ -411,29 +415,32 @@ void fuckFinalizer( void* _Context )
     {
     size_t count = 20;
 
-    dispatch_queue_t customQueue = dispatch_queue_create( "individual.TongG.customQueue", DISPATCH_QUEUE_SERIAL );
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    dispatch_group_async( dispatchGroup, self._customDispatchQueue
+                        , ^( void )
+                            {
+                            dispatch_apply( count, self._defaultGlobalDispatchQueue
+                                          , ^( size_t _CurrentIndex )
+                                            {
+                                            NSLog( @"Current Index#1: %zd", _CurrentIndex );
+                                            sleep( 3 );
+                                            } );
+                            } );
 
-    dispatch_async( customQueue
-                  , ^( void )
-                    {
-                    dispatch_apply( count, self._customDispatchQueue
-                                  , ^( size_t _CurrentIndex )
-                                     {
-                                     NSLog( @"Index#1: %zu", _CurrentIndex );
-                                     sleep( 10 );
-                                     } );
-                    } );
+    dispatch_group_async( dispatchGroup, self._customDispatchQueue
+                        , ^( void )
+                            {
+                            dispatch_apply( count, self._defaultGlobalDispatchQueue
+                                          , ^( size_t _CurrentIndex )
+                                            {
+                                            NSLog( @"Current Index#2: %zd", _CurrentIndex );
+                                            sleep( 3 );
+                                            } );
+                            } );
 
-    dispatch_async( customQueue
-                  , ^( void )
-                    {
-                    dispatch_apply( count, self._customDispatchQueue
-                                  , ^( size_t _CurrentIndex )
-                                     {
-                                     NSLog( @"Index#2: %zu", _CurrentIndex );
-                                     sleep( 10 );
-                                     } );
-                    } );
+    dispatch_group_wait( dispatchGroup, DISPATCH_TIME_FOREVER );
+                            
+    NSLog( @"Fuck completed" );
     }
 
 - ( IBAction ) suspendDefaultGlobalQueue: ( id )_Sender
