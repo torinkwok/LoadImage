@@ -62,10 +62,10 @@
     dispatch_queue_t defaultGlobalQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL );       \
     dispatch_queue_t mainQueue = dispatch_get_main_queue();         \
                                                                     \
-    NSLog( @"-%@ method\n"                                           \
-            "Current Queue: %@\n"                                     \
-            "Default Global Queue: %@\n"                              \
-            "Main Queue: %@\n\n"                                        \
+    NSLog( @"-%@ method\n"                                          \
+            "Current Queue: %@\n"                                   \
+            "Default Global Queue: %@\n"                            \
+            "Main Queue: %@\n\n"                                    \
          , NSStringFromSelector( _cmd ), currentQueue, defaultGlobalQueue, mainQueue    \
          );                                                                             \
 

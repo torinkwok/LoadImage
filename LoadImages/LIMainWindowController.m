@@ -32,40 +32,111 @@
  ****************************************************************************/
 
 #import "LIMainWindowController.h"
-#import "LIGetPathsOperation.h"
-#import "LILoadImagesOperation.h"
 
-void ( ^getPathsBlock )( NSURL* ) =
-    ^( NSURL* _URL )
+// Keys in the userInfo of NSNotification object
+NSString* const LILoadImageBlockUserDataError = @"error";
+NSString* const LILoadImageBlockUserDataFileInfo = @"fileInfo";
+
+// Keys in the fileInfo dictionary
+NSString* const LILoadImageBlockFileInfoNameKey = @"name";
+NSString* const LILoadImageBlockFileInfoPathKey = @"path";
+NSString* const LILoadImageBlockFileInfoModifiedDateKey = @"modifiedDate";
+NSString* const LILoadImageBlockFileInfoSizeKey = @"size";
+
+// Notification name
+NSString* const LILoadImageBlockLoadImageWillFinish = @"load image will finish";
+NSString* const LILoadImageBlockLoadImageDidFinish = @"load image did finish";
+
+BOOL isImageFile( NSURL* );
+void loadImagesFunc( void* );
+
+void getPathsFunc( void* _Data )
+    {
+    NSURL* url = ( NSURL* )_Data;
+
+    NSMutableArray* cachedPaths = [ NSMutableArray array ];
+    NSFileManager* fileManager = [ NSFileManager defaultManager ];
+
+    /* 1. Ignores hidden files
+     * 2. Ignores package descendents */
+    NSDirectoryEnumerator* dirEnumor = [ fileManager enumeratorAtURL: url
+                                          includingPropertiesForKeys: nil
+                                                             options: NSDirectoryEnumerationSkipsHiddenFiles
+                                                                        | NSDirectoryEnumerationSkipsPackageDescendants
+                                                        errorHandler: nil ];
+    NSInteger cacheCount = 10;
+    for ( NSURL* url in dirEnumor )
         {
-        NSMutableArray* cachedPaths = [ NSMutableArray array ];
-        NSFileManager* fileManager = [ NSFileManager defaultManager ];
-
-        /* 1. Ignores hidden files
-         * 2. Ignores package descendents */
-        NSDirectoryEnumerator* dirEnumor = [ fileManager enumeratorAtURL: _URL
-                                              includingPropertiesForKeys: nil
-                                                                 options: NSDirectoryEnumerationSkipsHiddenFiles
-                                                                            | NSDirectoryEnumerationSkipsPackageDescendants
-                                                            errorHandler: nil ];
-        NSInteger cacheCount = 10;
-        for ( NSURL* url in dirEnumor )
+        if ( cacheCount-- > 0 )
+            [ cachedPaths addObject: url ];
+        else
             {
-            if ( cacheCount-- > 0 )
-                [ cachedPaths addObject: url ];
-            else
-                {
-                LILoadImagesOperation* loadImageOperation = [ LILoadImagesOperation operationWithURLs: cachedPaths ];
+            dispatch_async_f( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 )
+                            , [ cachedPaths copy ]
+                            , loadImagesFunc
+                            );
 
-                [ loadImageOperation setQueuePriority: NSOperationQueuePriorityVeryHigh ];
-//                    [ self._operationQueue addOperations: @[ loadImageOperation ] waitUntilFinished: NO ];
+            cacheCount = 10;
 
-                cacheCount = 10;
-
-                [ cachedPaths removeAllObjects ];
-                }
+            [ cachedPaths removeAllObjects ];
             }
-        };
+        }
+    }
+
+void loadImagesFunc( void* _Data )
+    {
+    NSArray* rootURLs = ( NSArray* )_Data;
+
+    [ rootURLs enumerateObjectsUsingBlock:
+        ^( NSURL* _URL, NSUInteger _Index, BOOL* _Stop )
+            {
+            if ( isImageFile( _URL ) )
+                {
+                // Post a notification before loading the image
+                [ [ NSNotificationCenter defaultCenter ] postNotificationName: LILoadImageBlockLoadImageWillFinish
+                                                                       object: nil
+                                                                     userInfo: nil ];
+
+                NSURL* imageURL = _URL;
+
+                NSString* iamgeName = [ [ imageURL URLByDeletingPathExtension ] lastPathComponent ];
+                NSString* imagePath = [ imageURL absoluteString ];
+
+                NSDate* modifiedDate = nil;
+                [ imageURL getResourceValue: &modifiedDate forKey: NSURLContentModificationDateKey error: nil ];
+
+                NSNumber* imageSize = @0;
+                [ imageURL getResourceValue: &imageSize forKey: NSURLFileSizeKey error: nil ];
+
+                // The entry in userInfo will be added to the data source for table view
+                NSDictionary* userInfo = @{ LILoadImageBlockFileInfoNameKey : iamgeName
+                                          , LILoadImageBlockFileInfoPathKey : imagePath
+                                          , LILoadImageBlockFileInfoModifiedDateKey : modifiedDate
+                                          , LILoadImageBlockFileInfoSizeKey : [ NSNumber numberWithFloat: imageSize.floatValue / 1024 ]
+                                          };
+
+                // Post a notification if the image has been loaded successfully
+                [ [ NSNotificationCenter defaultCenter ] postNotificationName: LILoadImageBlockLoadImageDidFinish
+                                                                       object: nil
+                                                                     userInfo: userInfo ];
+                }
+            } ];
+    }
+
+BOOL isImageFile( NSURL* _FileForTesting )
+    {
+    BOOL isImageFile = NO;
+    NSString* UTLString = nil;
+    NSError* error = nil;
+
+    BOOL res = [ _FileForTesting getResourceValue: &UTLString
+                                           forKey: NSURLTypeIdentifierKey
+                                            error: &error ];
+    if ( res && UTLString )
+        isImageFile = UTTypeConformsTo( ( __bridge CFStringRef )UTLString, kUTTypeImage );
+
+    return isImageFile;
+    }
 
 // Announo
 @interface LIMainWindowController ()
@@ -123,7 +194,7 @@ void ( ^getPathsBlock )( NSURL* ) =
     // Register for the notification when an image file has been loaded by the NSOperation: LILoadImagesOperation
     [ [ NSNotificationCenter defaultCenter ] addObserver: self
                                                 selector: @selector( anyThread_handleLoadedImage: )
-                                                    name: LILoadImageOperationLoadImageDidFinish
+                                                    name: LILoadImageBlockLoadImageDidFinish
                                                   object: nil ];
 
     [ self._tableView setTarget: self ];
@@ -186,20 +257,13 @@ void ( ^getPathsBlock )( NSURL* ) =
                 [ self._tableDataSource removeAllObjects ];
                 [ self._tableView reloadData ];
 
-                self._getPathsOperation = [ LIGetPathsOperation operationWithURL: dirURL ];
-                [ self._operationQueue addOperations: @[ self._getPathsOperation ] waitUntilFinished: NO ];
+//                self._getPathsOperation = [ LIGetPathsOperation operationWithURL: dirURL ];
+//                [ self._operationQueue addOperations: @[ self._getPathsOperation ] waitUntilFinished: NO ];
 
-                GCD_QUEUE_TESTING;
-            #if 0
-                [ self._tableView selectColumnIndexes: nil byExtendingSelection: NO ];
-
-                NSArray* columns = [ self._tableView tableColumns ];
-                [ columns enumerateObjectsUsingBlock:
-                    ^( NSTableColumn* _Column, NSUInteger _Index, BOOL* _Stop )
-                        {
-                        [ self._tableView setIndicatorImage: nil inTableColumn: _Column ];
-                        } ];
-            #endif
+                dispatch_async_f( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 )
+                                , dirURL
+                                , getPathsFunc
+                                );
                 }
             } ];
     }
@@ -247,7 +311,7 @@ void ( ^getPathsBlock )( NSURL* ) =
     NSInteger row = [ tableView selectedRow ];
     if ( row > -1 )
         {
-        NSString* pathOfSelectedImage = [ self._tableDataSource[ row ] objectForKey: LILoadImageOperationFileInfoPathKey ];
+        NSString* pathOfSelectedImage = [ self._tableDataSource[ row ] objectForKey: LILoadImageBlockFileInfoPathKey ];
         NSURL* imageURL = [ NSURL URLWithString: pathOfSelectedImage ];
 
         // FIXME:
@@ -297,8 +361,48 @@ void ( ^getPathsBlock )( NSURL* ) =
 
     dispatch_queue_t customDefaultQueue = dispatch_queue_create( "individual.TongG.LoadImages.", DISPATCH_QUEUE_CONCURRENT );
     NSLog( @"Custom Dispatch Queue with Default Priority: %p", customDefaultQueue );
+    }
 
-    GCD_QUEUE_TESTING;
+void ( ^fuckBlock )() =
+    ^( void )
+        {
+        sleep( 10 );
+        NSLog( @"FuckBlock!" );
+        };
+
+void ( ^anotherFuckBlock )() =
+    ^( void )
+        {
+        sleep( 10 );
+        NSLog( @"FuckBlock!" );
+        };
+
+void fuckFunc( void* _ContextData )
+    {
+    sleep( 10 );
+    NSLog( @"FuckFunc!" );
+    }
+
+- ( IBAction ) testingForFinalizer: ( id )_Sender
+    {
+    dispatch_queue_t fuckDispatchQueue = dispatch_queue_create( "individual.TongG.fuckDispatchQueue", DISPATCH_QUEUE_CONCURRENT );
+
+    NSDate* fuckDate = [ [ NSDate alloc ] initWithTimeIntervalSinceNow: 20 ];
+    dispatch_set_context( fuckDispatchQueue, fuckDate );
+    dispatch_set_finalizer_f( fuckDispatchQueue, fuckFinalizer );
+
+    dispatch_async( fuckDispatchQueue, fuckBlock );
+    dispatch_async( fuckDispatchQueue, anotherFuckBlock );
+//    dispatch_async_f( fuckDispatchQueue, [ NSDate distantFuture ], fuckFunc );
+
+    dispatch_release( fuckDispatchQueue );
+    }
+
+void fuckFinalizer( void* _Context )
+    {
+    NSLog( @"#%s\n Context: %@", __func__, _Context );
+
+    [ ( NSDate* )_Context release ];
     }
 
 @end // LIMainWindowController + LIPartForTableViewDelegate

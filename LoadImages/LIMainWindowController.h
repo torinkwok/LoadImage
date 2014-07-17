@@ -33,6 +33,20 @@
 
 #import <Cocoa/Cocoa.h>
 
+// Keys in the userInfo of NSNotification object
+NSString extern* const LILoadImageBlockUserDataError;
+NSString extern* const LILoadImageBlockUserDataFileInfo;
+
+// Keys in the fileInfo dictionary
+NSString extern* const LILoadImageBlockFileInfoNameKey;
+NSString extern* const LILoadImageBlockFileInfoPathKey;
+NSString extern* const LILoadImageBlockFileInfoModifiedDateKey;
+NSString extern* const LILoadImageBlockFileInfoSizeKey;
+
+// Notification name
+NSString extern* const LILoadImageBlockLoadImageWillFinish;
+NSString extern* const LILoadImageBlockLoadImageDidFinish;
+
 @class LIGetPathsOperation;
 
 // LIMainWindowController class

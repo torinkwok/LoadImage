@@ -658,6 +658,12 @@
                                     <action selector="printTheDefaultQueue:" target="-1" id="pA6-LT-h7R"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Testing For Finalizer" id="JwL-3L-YpX">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="testingForFinalizer:" target="-1" id="qaq-HD-uxq"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
