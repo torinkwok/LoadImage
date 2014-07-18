@@ -676,6 +676,12 @@
                                     <action selector="suspendDefaultGlobalQueue:" target="-1" id="Gd0-gH-EAB"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Testing for Dispatch Source" id="7gU-GU-Beg">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="testingForDispatchSource:" target="-1" id="gJj-gQ-79G"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
