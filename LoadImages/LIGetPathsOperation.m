@@ -139,6 +139,8 @@
 - ( void ) main
     {
     @try {
+        NSLog( @"Graphics Context in Secondary Thread: %@", [ NSGraphicsContext currentContext ] );
+
         if ( ![ self isCancelled ] )
             {
             NSFileManager* fileManager = [ NSFileManager defaultManager ];

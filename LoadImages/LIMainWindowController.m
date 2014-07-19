@@ -134,6 +134,8 @@
 /* Trigger when user click "Load Images..." button */
 - ( IBAction ) startAction: ( id )_Sender
     {
+    NSLog( @"Graphics Context in Main Thread: %@", [ NSGraphicsContext currentContext ] );
+
     NSOpenPanel* openPanel = [ NSOpenPanel openPanel ];
 
     [ openPanel setCanChooseDirectories: YES ];

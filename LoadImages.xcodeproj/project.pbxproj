@@ -21,6 +21,7 @@
 		833CEB5B197147C9005FD0B6 /* LIMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 833CEB5A197147C9005FD0B6 /* LIMainWindowController.m */; };
 		834BFDF819715205005918E0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 834BFDF719715205005918E0 /* README.md */; };
 		834BFDF919715407005918E0 /* LIMainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 834BFDFB19715407005918E0 /* LIMainWindow.xib */; };
+		8369CC19197A92D900071563 /* LIContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8369CC18197A92D900071563 /* LIContentView.m */; };
 		83F38636197279D6005D129B /* LIGetPathsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F38635197279D6005D129B /* LIGetPathsOperation.m */; };
 		83F3865C1972909C005D129B /* LILoadImagesOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F3865B1972909C005D129B /* LILoadImagesOperation.m */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,8 @@
 		833CEB5A197147C9005FD0B6 /* LIMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LIMainWindowController.m; sourceTree = "<group>"; };
 		834BFDF719715205005918E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		834BFDFA19715407005918E0 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/LIMainWindow.xib; sourceTree = "<group>"; };
+		8369CC17197A92D900071563 /* LIContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LIContentView.h; sourceTree = "<group>"; };
+		8369CC18197A92D900071563 /* LIContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LIContentView.m; sourceTree = "<group>"; };
 		83F38634197279D6005D129B /* LIGetPathsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LIGetPathsOperation.h; sourceTree = "<group>"; };
 		83F38635197279D6005D129B /* LIGetPathsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LIGetPathsOperation.m; sourceTree = "<group>"; };
 		83F3865A1972909C005D129B /* LILoadImagesOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LILoadImagesOperation.h; sourceTree = "<group>"; };
@@ -132,6 +135,8 @@
 			children = (
 				833CEB3419714688005FD0B6 /* LIAppDelegate.h */,
 				833CEB3519714688005FD0B6 /* LIAppDelegate.m */,
+				8369CC17197A92D900071563 /* LIContentView.h */,
+				8369CC18197A92D900071563 /* LIContentView.m */,
 				833CEB59197147C9005FD0B6 /* LIMainWindowController.h */,
 				833CEB5A197147C9005FD0B6 /* LIMainWindowController.m */,
 				83F38634197279D6005D129B /* LIGetPathsOperation.h */,
@@ -286,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				833CEB2F19714688005FD0B6 /* main.m in Sources */,
+				8369CC19197A92D900071563 /* LIContentView.m in Sources */,
 				833CEB3619714688005FD0B6 /* LIAppDelegate.m in Sources */,
 				83F38636197279D6005D129B /* LIGetPathsOperation.m in Sources */,
 				83F3865C1972909C005D129B /* LILoadImagesOperation.m in Sources */,
