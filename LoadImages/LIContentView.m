@@ -43,6 +43,7 @@
 
 - ( void ) drawRect: ( NSRect )_Rect
     {
+#if 1   // Concurrent drawing
     dispatch_queue_t defaultGlobalQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
     dispatch_queue_t serialQueue = dispatch_queue_create( "individual.TongG.fuckQueue", DISPATCH_QUEUE_CONCURRENT );
 
@@ -50,7 +51,7 @@
 
     NSMutableArray* rectArray = [ NSMutableArray arrayWithCapacity: 10000 ];
     NSSize currentSize = [ self bounds ].size;
-    for ( int index = 0; index < 10000; index++ )
+    for ( int index = 0; index < 100000; index++ )
         {
         CGFloat randomWidth = ( CGFloat )( rand() % ( NSInteger )currentSize.width );
         CGFloat randomHeight = ( CGFloat )( rand() % ( NSInteger )currentSize.height );
@@ -66,8 +67,6 @@
                            , [ NSColor purpleColor ], [ NSColor orangeColor ]
                            , [ NSColor darkGrayColor ], [ NSColor yellowColor ]
                            ];
-
-    NSLog( @"%@", [ NSDate date ] );
 
     dispatch_async( serialQueue
                   , ^( void )
@@ -94,10 +93,9 @@
                                     [ self unlockFocus ];
                                     } );
                     } );
+#endif
 
-    NSLog( @"%@", [ NSDate date ] );
-
-#if 0
+#if 0   // Serial drawing
     for ( int _CurrentIndex = 0; _CurrentIndex < [ rectArray count ]; _CurrentIndex++ )
         {
         [ NSGraphicsContext saveGraphicsState ];
