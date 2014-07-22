@@ -13,11 +13,24 @@
         <customObject id="-3" userLabel="Application"/>
         <window title="Load Images" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="l1C-fJ-0ec">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="666" height="283"/>
+            <rect key="contentRect" x="196" y="240" width="666" height="326"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
-            <view key="contentView" id="wqj-CB-HEI">
-                <rect key="frame" x="0.0" y="0.0" width="666" height="283"/>
+            <view key="contentView" id="wqj-CB-HEI" customClass="LIContentView">
+                <rect key="frame" x="0.0" y="0.0" width="666" height="326"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ueR-d5-w4q">
+                        <rect key="frame" x="624" y="1" width="39" height="38"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="round" bezelStyle="circular" imagePosition="above" alignment="left" borderStyle="border" imageScaling="proportionallyDown" id="RtV-rK-ww8">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="label"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="fuck:" target="wqj-CB-HEI" id="Wp7-ei-ddC"/>
+                        </connections>
+                    </button>
+                </subviews>
             </view>
         </window>
     </objects>

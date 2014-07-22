@@ -43,9 +43,13 @@
 
 - ( void ) drawRect: ( NSRect )_Rect
     {
+    NSLog( @"Current Graphics %@ in %@", [ NSGraphicsContext currentContext ], NSStringFromSelector( _cmd ) );
+
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 )
                   , ^( void )
                     {
+                    NSLog( @"Current Graphics %@ in block", [ NSGraphicsContext currentContext ] );
+
                     [ self lockFocusIfCanDraw ];
 
                     [ NSGraphicsContext saveGraphicsState ];
@@ -57,7 +61,7 @@
                     NSBezierPath* customClipRegionOne = [ NSBezierPath bezierPathWithRect: customClipRectOne ];
                     [ customClipRegionOne appendBezierPathWithRect: customClipRectTwo ];
                     [ customClipRegionOne appendBezierPathWithOvalInRect: customClipRectThree ];
-//                    [ customClipRegionOne appendBezierPathWithOvalInRect: customClipRectFour ];
+                    [ customClipRegionOne appendBezierPathWithOvalInRect: customClipRectFour ];
 
                     NSBezierPath* customClipRegionTwo = [ NSBezierPath bezierPathWithOvalInRect: customClipRectFour ];
 
@@ -67,7 +71,7 @@
                     NSFrameRect( customClipRectOne );
                     NSFrameRect( customClipRectTwo );
                     NSFrameRect( customClipRectThree );
-//                    NSFrameRect( customClipRectFour );
+                    NSFrameRect( customClipRectFour );
 
 //                    NSRectClip( customClipRectTwo );
 //                    NSRectClip( customClipRectOne );
@@ -127,6 +131,11 @@
                     [ NSGraphicsContext restoreGraphicsState ];
                     [ self unlockFocus ];
                     } );
+    }
+
+- ( IBAction ) fuck: ( id )_Sender
+    {
+    NSLog( @"Current Graphics %@ in %@", [ NSGraphicsContext currentContext ], NSStringFromSelector( _cmd ) );
     }
 
 @end // LIContentView
