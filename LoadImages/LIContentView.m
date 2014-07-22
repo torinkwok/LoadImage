@@ -43,7 +43,7 @@
 
 - ( void ) drawRect: ( NSRect )_Rect
     {
-#if 1   // Concurrent drawing
+#if 0   // Concurrent drawing
     dispatch_queue_t defaultGlobalQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
     dispatch_queue_t serialQueue = dispatch_queue_create( "individual.TongG.fuckQueue", DISPATCH_QUEUE_CONCURRENT );
 
