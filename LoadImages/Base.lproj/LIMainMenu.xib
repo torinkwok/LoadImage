@@ -670,6 +670,18 @@
                                     <action selector="drawingPatterns:" target="-1" id="v7k-vZ-djS"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Testing for Coordinate Translation" id="kOm-Ub-duk">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="testingForCoordinateTranslation:" target="-1" id="82n-fz-bng"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Testing for Color Space" id="Kd9-oK-7Ak">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="testingForColorSpace:" target="-1" id="T6H-z2-G3k"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>

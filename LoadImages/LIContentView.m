@@ -57,22 +57,16 @@
     [ super dealloc ];
     }
 
-- ( BOOL ) isFlipped
-    {
-    return YES;
-    }
-
-//- ( void ) drawRect: ( NSRect )_Rect
-//    {
-//
-//    }
-
 - ( void ) handleDrawingPatternsNotif: ( NSNotification* )_Notif
     {
+    NSLog( @"Current screen resolution: %gdpi", [ [ self window ] userSpaceScaleFactor ] * 72.f );
+    NSLog( @"shit: %gdpi", [ [ NSScreen mainScreen ] userSpaceScaleFactor ] * 72.f );
+    NSLog( @"fuck: %@dpi", [ [ NSScreen mainScreen ] deviceDescription ][ NSDeviceResolution ] );
+
     NSColor* RGBColor = [ NSColor colorWithCalibratedRed: 124.f / 255.f
-                                                green: 113.f / 255.f
-                                                 blue: 183.f / 255.f
-                                                alpha: 0.9 ];
+                                                   green: 113.f / 255.f
+                                                    blue: 183.f / 255.f
+                                                   alpha: 0.9 ];
 
     NSColor* CMYKColor = [ NSColor colorWithDeviceCyan: 0.6324f
                                                magenta: 0.1843f
@@ -97,12 +91,12 @@
                     [ customClipRegionOne appendBezierPathWithOvalInRect: customClipRectFour ];
 
                     NSAffineTransform* xForm = [ NSAffineTransform transform ];
-                    NSAffineTransformStruct transformStruct = { .8, 0, 0, .8, 160, 54 };
+                    NSAffineTransformStruct transformStruct = { 1.f, 0, 0, -1.f, .0f, self.bounds.size.height };
                     [ xForm setTransformStruct: transformStruct ];
-//                    [ xForm translateXBy: 160 yBy: 54 ];
-//                    [ xForm scaleBy: .8f ];
-//                    [ xForm rotateByDegrees: 45 ];
-
+                #if 0
+                    [ xForm scaleXBy: 1.f yBy: -1.f ];
+                    [ xForm translateXBy: .0f yBy: -self.bounds.size.height ];
+                #endif
                     [ xForm concat ];
 
                     NSFrameRect( customClipRectOne );
@@ -122,7 +116,7 @@
                     NSRect lastRect = NSMakeRect( drawingArea.origin.x, drawingArea.origin.y, rectWidth, rectHeight );
                     int fuckVal = 0;
 
-                    for ( size_t index = 0; index < 50; index ++ )
+                    for ( size_t index = 0; index < 100; index ++ )
                         {
                         [ [ NSGraphicsContext currentContext ] saveGraphicsState ];
 
@@ -153,31 +147,21 @@
                         }
 
                     [ NSGraphicsContext restoreGraphicsState ];
+                    [ xForm invert ];
+                    [ xForm concat ];
                     [ self unlockFocus ];
                     } );
     }
 
 - ( void ) mouseDown: ( NSEvent* )_Event
     {
-    NSPoint downPoint = [ self convertPoint: [ _Event locationInWindow ] fromView: nil ];
+    NSPoint locationInWindow = [ _Event locationInWindow ];
+    NSPoint locationInCurrentView = [ self convertPoint: locationInWindow fromView: nil ];
+    NSPoint locationInScreen = [ self convertPointFromBase: locationInWindow ];
 
-    if ( self._mouseDownCount < 4 )
-        {
-        self._mouseDownCount++;
-
-        if ( self._mouseDownCount == 1 )
-            [ self._bezierPath moveToPoint: downPoint ];
-        else
-            [ self._bezierPath lineToPoint: downPoint ];
-        }
-    else
-        {
-        [ self._bezierPath stroke ];
-
-        self._mouseDownCount = 0;
-
-        [ self._bezierPath removeAllPoints ];
-        }
+    NSLog( @"LocationInWindow: %@", NSStringFromPoint( locationInWindow ) );
+    NSLog( @"LocationInCurrentView: %@", NSStringFromPoint( locationInCurrentView ) );
+    NSLog( @"LocationInScreen: %@", NSStringFromPoint( locationInScreen ) );
     }
 
 @end // LIContentView

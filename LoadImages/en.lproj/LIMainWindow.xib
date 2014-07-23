@@ -15,9 +15,21 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <rect key="contentRect" x="196" y="240" width="1452" height="899"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
-            <view key="contentView" id="wqj-CB-HEI" customClass="LIContentView">
+            <view key="contentView" id="wqj-CB-HEI">
                 <rect key="frame" x="0.0" y="0.0" width="1452" height="899"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="LGd-0d-TUc" customClass="LIContentView">
+                        <rect key="frame" x="0.0" y="0.0" width="1452" height="899"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </customView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="LGd-0d-TUc" firstAttribute="leading" secondItem="wqj-CB-HEI" secondAttribute="leading" id="1I6-fl-LE2"/>
+                    <constraint firstAttribute="trailing" secondItem="LGd-0d-TUc" secondAttribute="trailing" id="5XX-ch-bWn"/>
+                    <constraint firstAttribute="bottom" secondItem="LGd-0d-TUc" secondAttribute="bottom" id="cRT-q0-Wyv"/>
+                    <constraint firstItem="LGd-0d-TUc" firstAttribute="top" secondItem="wqj-CB-HEI" secondAttribute="top" id="gqx-cL-2jY"/>
+                </constraints>
             </view>
         </window>
     </objects>

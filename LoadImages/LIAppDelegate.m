@@ -59,6 +59,13 @@
                                                            object: self ];
     }
 
+- ( IBAction ) testingForColorSpace: ( id )_Sender
+    {
+    NSColorSpace* calibratedRGBSpace = [ NSColorSpace genericRGBColorSpace ];
+
+    NSArray* availableColorSpaces = [ NSColorSpace availableColorSpacesWithModel: NSRGBColorSpaceModel ];
+    }
+
 @end // LIAppDelegate
 
 /////////////////////////////////////////////////////////////////////////////
