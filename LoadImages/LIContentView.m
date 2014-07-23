@@ -36,20 +36,53 @@
 // LIContentView class
 @implementation LIContentView
 
+@synthesize _mouseDownCount;
+@synthesize _bezierPath;
+
+- ( void ) awakeFromNib
+    {
+    self._mouseDownCount = 0;
+    self._bezierPath = [ NSBezierPath bezierPath ];
+
+    [ [ NSNotificationCenter defaultCenter ] addObserver: self
+                                                selector: @selector( handleDrawingPatternsNotif: )
+                                                    name: @"TranslateContext"
+                                                  object: nil ];
+    }
+
+- ( void ) dealloc
+    {
+    [ [ NSNotificationCenter defaultCenter ] removeObserver: self ];
+
+    [ super dealloc ];
+    }
+
 - ( BOOL ) isFlipped
     {
     return YES;
     }
 
-- ( void ) drawRect: ( NSRect )_Rect
+//- ( void ) drawRect: ( NSRect )_Rect
+//    {
+//
+//    }
+
+- ( void ) handleDrawingPatternsNotif: ( NSNotification* )_Notif
     {
-    NSLog( @"Current Graphics %@ in %@", [ NSGraphicsContext currentContext ], NSStringFromSelector( _cmd ) );
+    NSColor* RGBColor = [ NSColor colorWithCalibratedRed: 124.f / 255.f
+                                                green: 113.f / 255.f
+                                                 blue: 183.f / 255.f
+                                                alpha: 0.9 ];
+
+    NSColor* CMYKColor = [ NSColor colorWithDeviceCyan: 0.6324f
+                                               magenta: 0.1843f
+                                                yellow: 0.1571f
+                                                 black: 0.0221f
+                                                 alpha: 1.f ];
 
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 )
                   , ^( void )
                     {
-                    NSLog( @"Current Graphics %@ in block", [ NSGraphicsContext currentContext ] );
-
                     [ self lockFocusIfCanDraw ];
 
                     [ NSGraphicsContext saveGraphicsState ];
@@ -63,29 +96,20 @@
                     [ customClipRegionOne appendBezierPathWithOvalInRect: customClipRectThree ];
                     [ customClipRegionOne appendBezierPathWithOvalInRect: customClipRectFour ];
 
-                    NSBezierPath* customClipRegionTwo = [ NSBezierPath bezierPathWithOvalInRect: customClipRectFour ];
+                    NSAffineTransform* xForm = [ NSAffineTransform transform ];
+                    NSAffineTransformStruct transformStruct = { .8, 0, 0, .8, 160, 54 };
+                    [ xForm setTransformStruct: transformStruct ];
+//                    [ xForm translateXBy: 160 yBy: 54 ];
+//                    [ xForm scaleBy: .8f ];
+//                    [ xForm rotateByDegrees: 45 ];
 
-                    [ customClipRegionOne addClip ];
-                    [ customClipRegionTwo setClip ];
+                    [ xForm concat ];
 
                     NSFrameRect( customClipRectOne );
                     NSFrameRect( customClipRectTwo );
                     NSFrameRect( customClipRectThree );
                     NSFrameRect( customClipRectFour );
 
-//                    NSRectClip( customClipRectTwo );
-//                    NSRectClip( customClipRectOne );
-
-                    NSColor* RGBColor = [ NSColor colorWithCalibratedRed: 124.f / 255.f
-                                                                green: 113.f / 255.f
-                                                                 blue: 183.f / 255.f
-                                                                alpha: 0.9 ];
-
-                    NSColor* CMYKColor = [ NSColor colorWithDeviceCyan: 0.6324f
-                                                               magenta: 0.1843f
-                                                                yellow: 0.1571f
-                                                                 black: 0.0221f
-                                                                 alpha: 1.f ];
                     CGFloat rectWidth = 100.f;
                     CGFloat rectHeight = 50.f;
                     CGFloat widthGap = 20.f;
@@ -98,7 +122,7 @@
                     NSRect lastRect = NSMakeRect( drawingArea.origin.x, drawingArea.origin.y, rectWidth, rectHeight );
                     int fuckVal = 0;
 
-                    for ( size_t index = 0; index < 40; index ++ )
+                    for ( size_t index = 0; index < 50; index ++ )
                         {
                         [ [ NSGraphicsContext currentContext ] saveGraphicsState ];
 
@@ -133,9 +157,27 @@
                     } );
     }
 
-- ( IBAction ) fuck: ( id )_Sender
+- ( void ) mouseDown: ( NSEvent* )_Event
     {
-    NSLog( @"Current Graphics %@ in %@", [ NSGraphicsContext currentContext ], NSStringFromSelector( _cmd ) );
+    NSPoint downPoint = [ self convertPoint: [ _Event locationInWindow ] fromView: nil ];
+
+    if ( self._mouseDownCount < 4 )
+        {
+        self._mouseDownCount++;
+
+        if ( self._mouseDownCount == 1 )
+            [ self._bezierPath moveToPoint: downPoint ];
+        else
+            [ self._bezierPath lineToPoint: downPoint ];
+        }
+    else
+        {
+        [ self._bezierPath stroke ];
+
+        self._mouseDownCount = 0;
+
+        [ self._bezierPath removeAllPoints ];
+        }
     }
 
 @end // LIContentView

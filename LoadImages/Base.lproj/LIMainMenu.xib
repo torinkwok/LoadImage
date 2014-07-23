@@ -660,6 +660,19 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Drawing" id="tye-tq-kWU">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Drawing" id="RdB-Nc-dT3">
+                        <items>
+                            <menuItem title="Drawing Patterns" keyEquivalent="D" id="zHZ-fY-tn5">
+                                <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                                <connections>
+                                    <action selector="drawingPatterns:" target="-1" id="v7k-vZ-djS"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
             </items>
         </menu>
     </objects>

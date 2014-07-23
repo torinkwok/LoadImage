@@ -53,6 +53,12 @@
 
     }
 
+- ( IBAction ) drawingPatterns: ( id )_Sender
+    {
+    [ [ NSNotificationCenter defaultCenter ] postNotificationName: @"TranslateContext"
+                                                           object: self ];
+    }
+
 @end // LIAppDelegate
 
 /////////////////////////////////////////////////////////////////////////////

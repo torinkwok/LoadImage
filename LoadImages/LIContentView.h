@@ -35,6 +35,10 @@
 
 // LIContentView class
 @interface LIContentView: NSView
+
+@property ( assign ) NSInteger _mouseDownCount;
+@property ( retain ) NSBezierPath* _bezierPath;
+
 @end // LIContentView
 
 /////////////////////////////////////////////////////////////////////////////
