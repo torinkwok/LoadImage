@@ -682,6 +682,13 @@
                                     <action selector="testingForColorSpace:" target="-1" id="T6H-z2-G3k"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="V6H-2t-vE5"/>
+                            <menuItem title="Testing for NSImageRep" id="dac-Jk-b3b">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="testingForImageRef:" target="-1" id="YFJ-6u-4hq"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>

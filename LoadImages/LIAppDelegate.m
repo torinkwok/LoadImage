@@ -127,6 +127,25 @@ void printComponentsValue( NSColor* _ColorObj )
     free( components );
     }
 
+#pragma mark Testings for NSImage, NSImageRep along with its subclass
+- ( IBAction ) testingForImageRef: ( id )_Sender
+    {
+    NSOpenPanel* openPanel = [ NSOpenPanel openPanel ];
+
+    [ openPanel beginSheetModalForWindow: [ self._mainWindowController window ]
+                       completionHandler:
+        ^( NSInteger _Result )
+            {
+            if ( _Result == NSFileHandlingPanelOKButton )
+                {
+                NSArray* imageReps = [ NSImageRep imageRepsWithContentsOfURL: [ openPanel URL ] ];
+
+                NSLog( @"ImageReps: %@", imageReps );
+                }
+            } ];
+
+    }
+
 @end // LIAppDelegate
 
 /////////////////////////////////////////////////////////////////////////////

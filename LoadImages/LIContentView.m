@@ -135,9 +135,9 @@
                             originalRect.origin.y = heightGap + ( heightGap + originalRect.size.height ) * transboundaryCount++;
                             }
 
-                        [ CMYKColor setStroke ];
+                        [ [ CMYKColor colorWithAlphaComponent: .7 ] setStroke ];
                         NSColor* deviceCMYKColor = [ RGBColor colorUsingColorSpaceName: NSDeviceCMYKColorSpace ];
-                        [ deviceCMYKColor setFill ];
+                        [ [ deviceCMYKColor colorWithAlphaComponent: .7 ] setFill ];
 
                         NSBezierPath* roundedRectPath = [ NSBezierPath bezierPathWithRoundedRect: originalRect xRadius: index yRadius: index ];
                         [ roundedRectPath setLineWidth: 10 ];
@@ -158,6 +158,7 @@
                     } );
     }
 
+#if 0
 - ( void ) mouseDown: ( NSEvent* )_Event
     {
     NSPoint locationInWindow = [ _Event locationInWindow ];
@@ -168,7 +169,7 @@
     NSLog( @"LocationInCurrentView: %@", NSStringFromPoint( locationInCurrentView ) );
     NSLog( @"LocationInScreen: %@", NSStringFromPoint( locationInScreen ) );
     }
-
+#endif
 @end // LIContentView
 
 /////////////////////////////////////////////////////////////////////////////

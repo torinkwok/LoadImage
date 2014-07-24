@@ -13,22 +13,22 @@
         <customObject id="-3" userLabel="Application"/>
         <window title="Load Images" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="l1C-fJ-0ec">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="1452" height="899"/>
+            <rect key="contentRect" x="196" y="240" width="600" height="300"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
             <view key="contentView" id="wqj-CB-HEI">
-                <rect key="frame" x="0.0" y="0.0" width="1452" height="899"/>
+                <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="LGd-0d-TUc" customClass="LIContentView">
-                        <rect key="frame" x="0.0" y="0.0" width="1452" height="899"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     </customView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="LGd-0d-TUc" firstAttribute="leading" secondItem="wqj-CB-HEI" secondAttribute="leading" id="1I6-fl-LE2"/>
-                    <constraint firstAttribute="trailing" secondItem="LGd-0d-TUc" secondAttribute="trailing" id="5XX-ch-bWn"/>
-                    <constraint firstAttribute="bottom" secondItem="LGd-0d-TUc" secondAttribute="bottom" id="cRT-q0-Wyv"/>
-                    <constraint firstItem="LGd-0d-TUc" firstAttribute="top" secondItem="wqj-CB-HEI" secondAttribute="top" id="gqx-cL-2jY"/>
+                    <constraint firstItem="LGd-0d-TUc" firstAttribute="leading" secondItem="wqj-CB-HEI" secondAttribute="leading" id="8lr-ha-XfN"/>
+                    <constraint firstItem="LGd-0d-TUc" firstAttribute="top" secondItem="wqj-CB-HEI" secondAttribute="top" id="BFc-MN-hhI"/>
+                    <constraint firstAttribute="trailing" secondItem="LGd-0d-TUc" secondAttribute="trailing" id="jWS-q7-9px"/>
+                    <constraint firstAttribute="bottom" secondItem="LGd-0d-TUc" secondAttribute="bottom" id="qVp-af-CuK"/>
                 </constraints>
             </view>
         </window>
