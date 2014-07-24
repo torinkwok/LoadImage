@@ -74,6 +74,9 @@
                                                  black: 0.0221f
                                                  alpha: 1.f ];
 
+    NSImage* pattern = [ NSImage imageNamed: NSImageNameApplicationIcon ];
+    NSColor* patternColor = [ NSColor colorWithPatternImage: pattern ];
+
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 )
                   , ^( void )
                     {
@@ -132,12 +135,14 @@
                             originalRect.origin.y = heightGap + ( heightGap + originalRect.size.height ) * transboundaryCount++;
                             }
 
+                        [ CMYKColor setStroke ];
+                        NSColor* deviceCMYKColor = [ RGBColor colorUsingColorSpaceName: NSDeviceCMYKColorSpace ];
+                        [ deviceCMYKColor setFill ];
+
                         NSBezierPath* roundedRectPath = [ NSBezierPath bezierPathWithRoundedRect: originalRect xRadius: index yRadius: index ];
                         [ roundedRectPath setLineWidth: 10 ];
-                        [ CMYKColor set ];
                         [ roundedRectPath stroke ];
 
-                        [ RGBColor set ];
                         [ roundedRectPath fill ];
 
                         lastRect = originalRect;
